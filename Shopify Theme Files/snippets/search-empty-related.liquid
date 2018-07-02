@@ -1,0 +1,24 @@
+{% if settings.empty_search_collection %}
+<div class="empty-search-related">
+	<h2>{{- settings.empty_search_collection_title -}}</h2>
+
+	{% assign max_products = 3 %}
+	{% assign counter = 0 %}
+
+	<div class="collection-products items">
+		{% for product in collections[settings.empty_search_collection].products %}
+			{% assign all_tags = product.tags | downcase %}
+	        {% if all_tags contains 'in grid promo' %}
+	        {% elsif product.object_type == 'product' %}
+
+                {% if max_products == counter %}
+                    {% break %}
+                {% endif %}
+	            {% include 'search-grid-item' %}
+	        	{% assign counter = counter | plus: 1 %}
+	        {% endif %}
+
+        {% endfor %}
+	</div>
+</div>
+{% endif %}

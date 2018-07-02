@@ -1,0 +1,243 @@
+{% comment %}
+<!-- Author windsor@1r - Product Detail page -->
+<!-- /templates/product.liquid -->
+{% endcomment %}
+{% assign all_tags = product.tags | join | downcase %}
+{% assign preorder_tag = 'pre-order' %}
+{% assign isPromo = false %}
+{% assign isGiftCard = false %}
+{% assign isFinalSale = false %}
+{% assign video = false %}
+
+{% if all_tags contains 'in grid promo' %}
+    {% assign isPromo = true %}
+    {% for collection in product.collections %}
+        <script>window.location.href = '{{ collection.url }}';</script>
+    {{ break }}
+    {% endfor %}
+{% endif %}
+
+{% if all_tags contains preorder_tag %}
+    {% assign isPreOrder = true %}
+{% endif %}
+
+{% if all_tags contains 'final sale' %}
+    {% assign isFinalSale = true %}
+{% endif %}
+
+{% if product.type == 'Gift Card' %}
+    {% assign isGiftCard = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available %}
+    {% assign sold_out = false %}
+{% endif %}
+
+{% comment %}
+Get product bg image
+{% endcomment %}
+
+{% assign info_bg = false %}
+{% if settings.product_bg %}
+{% assign info_bg = settings.product_bg %}
+{% endif %}
+
+<div class="product-page{% if isGiftCard %} gift-card{% endif %}{% if sold_out %} sold-out{% endif %}" itemscope itemtype="http://schema.org/Product">
+
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+
+    <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
+    <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
+    <meta itemprop="brand" content="{{ product.vendor }}">
+    <meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
+    {%- assign m_description = product.description | escape | strip_html -%}
+    {% assign m_description_parts = product.description | split: '[tab]' %}
+    {% if m_description_parts.size > 1 %}
+      {% for desc in m_description_parts %}
+          {% if forloop.first %}
+              {%- assign m_description = desc | strip_html -%}
+          {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <meta itemprop="description" content="{{- m_description -}}">
+    {% unless product == empty %}
+        <script type="application/json" data-product-json>
+            {{ product | json }}
+        </script>
+    {% endunless %}
+  
+    <article class="product-single{% if isGiftCard %} gift-card{% endif %}{% if sold_out %} sold-out{% endif %}">
+        
+        <div class="product-media">
+            {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+            {% assign imageMainSrcSections = featured_image.src | split: '_' %}
+            {% assign selected_image_option = imageMainSrcSections[2] %}
+          
+            <div class="product-single__photos" id="ProductPhoto">
+                <div class="images-wrapper" data-selected="{{ selected_image_option | downcase}}">
+                {% for image in product.images %}
+                    {% if image.src contains 'PDP_BG' %}
+                        {% assign info_bg = image.src %}
+                    {% else %}
+                        {% assign imageSrcSections = image.src | split: '_' %}
+                        {% if imageSrcSections[1] != 'swatch' %}
+                            {% assign activeClass = 'inactive' %}
+                            {% if imageSrcSections[2] == selected_image_option %}
+                                {% assign activeClass = 'active' %}
+                            {% endif %}
+                            <a href="{{ image.src | img_url: 'master' }}" class="image-slide" data-option="{{ imageSrcSections[2] | downcase }}">
+                                <div class="image-wrap"><img src="{{ image.src | img_url: '1024x' }}" alt="{{ image.alt | escape }}"></div>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            
+            <ul class="product-single__thumbnails" id="ProductThumbs">
+                {% for image in product.images %}
+                {% unless image.src contains 'PDP_BG' %}
+                    {% assign imageSrcSections = image.src | split: '_' %}
+                    {% if imageSrcSections[1] != 'swatch' %}
+                        {% assign activeClass = 'inactive' %}
+                        {% if imageSrcSections[2] == selected_image_option %}
+                            {% assign activeClass = 'active' %}
+                        {% endif %}
+                        <li class="{{ activeClass }}" data-option="{{ imageSrcSections[2] | downcase }}" data-index="{{ forloop.index }}">
+                            <a href="{{ image.src | img_url: '1400x' }}" class="product-single__thumbnail image-slide">
+                                <img src="{{ image.src | img_url: '1400x' }}" alt="{{ image.alt | escape }}">
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endunless %}
+                {% endfor %}
+            </ul>
+        </div><!-- .product-media -->
+        
+        <div class="product-info">
+            <div class="product-info-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                
+                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+                <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
+
+                {% comment %}
+                <!-- ID addToCartForm is a selector for the ajax cart plugin -->
+                {% endcomment %}
+                <div class="product-info-wrapper" {%- if info_bg -%} style="background-image:url('{{ info_bg | img_url: 'master' }}');"{%- endif -%}>
+                    <div class="inner-wrapper">
+                        <h1 itemprop="name">{{ product.title }}</h1>
+                        
+                        <div class="price-box">
+
+                            {% if product.compare_at_price_max > product.price %}
+                            <span class="product-compare-price">{{- current_variant.compare_at_price | money_with_currency | remove: '.00' | replace: '$','' | replace: 'compare at','' -}}</span>
+                            {% endif %}
+                            <!-- {{- current_variant.price | money_with_currency | remove: '.00' | replace: '$','' -}} -->
+                            <span class="product-price" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">{{- current_variant.price | money_with_currency | remove: '.00' | replace: '$','' -}}</span>
+                        </div>
+                        
+                        {% if isFinalSale %}
+                        <div class="hide final-sale-tag">{{ final_sale_tag }}</div>
+                        {% endif %}
+
+                        <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="add-to-cart-form">
+                            
+                            {% if isFinalSale %}
+                            <div class="hide"><input type="text" id="final-sale" name="properties[{{ final_sale_tag }}]" value="yes"/></div>
+                            {% endif %}
+                            
+                            <div class="product-attribute-container">
+                                {% include 'product-siblings' %}
+                                {% include 'product-swatches' %}
+                                <div class="product-select-wrapper">
+                                    <select name="id" id="productSelect" class="product-single__variants">
+                                    {% for variant in product.variants %}
+                                        {% if variant.available %}
+                                            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+                                                {{ variant.title }} - {{ variant.price | money_with_currency }}
+                                            </option>
+                                        {% else %}
+                                            <option disabled="disabled">
+                                                {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                                            </option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="add-to-cart-wrapper">
+                                <div class="product-qty-container hide">
+                                    <div class="qty-label">Qty</div>
+                                    <div class="qty"><input type="number" id="Quantity" name="quantity" value="1" min="1" class=""></div>
+                                </div>
+                                
+                                <button type="submit" name="add" id="AddToCart" class="cta add-to-cart-btn {% if sold_out %}disabled{% endif %}">
+                                    <span class="add-to-cart-text" >{% unless sold_out %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endunless %}</span>
+                                </button>
+                                <div class="product-soldout-text">
+                                  {{settings.product_soldout_text}}
+                              	  {% include 'iStock-notify-me' %}	
+                                </div>
+
+                                
+
+                            </div><!-- .add-to-cart-wrapper -->
+
+                        </form>
+
+                    </div><!-- .inner-wrapper -->
+                
+                    <div class="scroll-to">{{- settings.related_title -}}</div>
+
+                </div><!-- .product-info-wrapper -->
+
+                <div class="floating-content">
+
+                    <div class="product-content-nav">
+                        <a class="content-toggle" href="#product-description" role="tab">Details</a>
+                        {% if(settings.product_sizechart_enable && !isGiftCard) %}
+                        <a class="content-toggle" href="#size-chart" role="tab">Size Guide</a>
+                        {% endif %}
+                        <a class="content-toggle" href="#product-share" role="tab">Share</a>
+                    </div>
+
+                    <div class="product-content-wrapper">
+                        <div class="utility-close"></div>
+                    
+                        <div class="pdp-utility" id="product-description" itemprop="description" role="dialog">
+                            <div class="description-wrapper">{{- product.description -}}</div>
+                        </div>
+                        
+                        {% if settings.product_sizechart_enable && !isGiftCard %}
+                            {% section 'product-size-chart' %}
+                        {% endif %}
+                
+                        <div class="one-social pdp-utility" id="product-share" role="dialog">
+                            <div class="description-wrapper">
+                                <div class="share-list">
+                                    <a class="share-fb icon-facebook" title="Share on Facebook"><span>Facebook</span></a>
+                                    <a class="share-pin icon-pinterest2" title="Share on Pinterest"><span>Pinterest</span></a>
+                                    <a class="share-tw icon-twitter" title="Share on Twitter"><span>Twitter</span></a>
+                                    <!-- <a class="share-mail icon-mail" href="mailto:?subject=I wanted you to see this cool {{ shop.name }} product&amp;body=Check out the {{ product.title }} - {{ product.url | prepend: shop.url }} - {{ shop.name }}"><span>Email</span></a> -->
+                                    <a class="share-copy icon-copy-link" title="Copy link on Clipboard"><span>Copy Link</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- .product-content-wrapper -->
+
+                </div><!-- .floating-content -->
+                
+            </div><!-- div[itemprop="offers"] -->
+        </div><!-- .product-info -->
+        
+    </article><!-- .product-single -->
+    
+    <div id="fix-stopper"></div>
+    
+    {% section 'related-products' %}
+</div>

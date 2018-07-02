@@ -1,0 +1,50 @@
+{% comment %}
+<!-- Needs video and poster_image variables values set before including the snippet anyqhere -->
+{% endcomment %}
+{% if video %}
+<div class="video-container {% if video_container_class%}{{video_container_class}}{% endif %}">
+
+  {% if video contains 'youtube' or video contains 'youtu.be' %}
+    {% assign yt_video = video | split: "=" %}
+    {% if yt_video[1].size > 1 %}
+      <div class="video-wrapper">
+        <div id="video_box_{{section.id}}" class="video-box" data-video-id="{{ yt_video[1] }}" data-video-type="youtube"></div>
+      </div>
+    {% endif %}
+  {% elsif video contains 'vimeo' %}
+    {% assign video = video | replace: 'https://vimeo.com/', 'https://player.vimeo.com/video/' %}
+    {% assign vm_video = video | split: "/" %}
+        <div class="video-wrapper">
+          <!-- <iframe id="video_box_{{section.id}}{{video_container_class}}" src="" width="360" height="360" frameborder="0" title="{{ v_title }}" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" data-ready="true" class="video-box" data-video-id="{{ vm_video[4] }}" data-video-src="{{ video }}" data-video-type="vimeo"></iframe> 
+id: video_id,
+                    byline: false,
+                    portrait: false,
+                    autoplay: true,
+                    title: false,
+                    loop: true,
+          background: true
+          data-vimeo-background='true' data-vimeo-loop='true' data-vimeo-autoplay='true' data-vimeo-portrait='false' data-vimeo-defer
+          -->
+          <div id="video_box_{{section.id}}" class="video-box" title="{{ v_title }}" data-video-id="{{ vm_video[4] }}" data-video-src="{{ video }}" data-video-type="vimeo"></div>
+          <div class="video-controls"></div>
+          {% if poster_image %}
+            <div class="poster-image" {% if poster_image %} style="background-image:url('{{ poster_image }}');" {% endif %}></div>
+          {% endif %}
+        </div>
+  {% else %}
+    <div class="video-wrapper"><!--  -->
+    <!-- <video id="video_box_{{section.id}}{{video_container_class}}" autoplay="autoplay" onError="style.display = 'none';" class="video-box">
+      <source src="{{ video }}" type="video/mp4">
+      Video not supported
+    </video> -->
+    <div id="video_box_{{section.id}}{{video_container_class}}" class="video-box" data-video-id="video_box_{{section.id}}{{video_container_class}}" data-video-src="{{ video }}" data-video-type="selfhosted"></div>
+    <div class="video-controls"></div>
+    {% if poster_image %}
+      <div class="poster-image" {% if poster_image %} style="background-image:url('{{ poster_image }}');" {% endif %}></div>
+    {% endif %}
+    </div>
+  {% endif %}
+
+  
+</div><!-- .video_container -->
+{% endif %}

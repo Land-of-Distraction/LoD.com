@@ -1,0 +1,111 @@
+{% if settings.show_related_products == true %}
+
+{% comment %}
+  Heading.
+  Leave blank if you don't need one.
+{% endcomment %}
+
+{% assign isSection = true %}
+{% assign heading = settings.related_title %}
+
+{% comment %}
+  Set either or both to true, if you want
+  to limit yourself to items with same vendor, and/or type.
+{% endcomment %}
+
+{% assign same_vendor = false %}
+{% assign same_type = false %}
+{% assign max_products = 2 %}
+{% assign skip_tags = 'promo,promotion,in grid promo,in-grid-promo' | split: ',' %}
+
+{% comment %}
+  Collections to ignore.
+  Never pick related items from those.
+{% endcomment %}
+<!-- frontpage, -->
+{% assign exclusions = 'all' | split: ',' %}
+
+{% comment %}
+  Looking for a relevant collection.
+{% endcomment %}
+
+{% if product.metafields.c_f['Related Products'] %}
+    {% assign collection = collections[product.metafields.c_f['Related Products']] %}
+{% endif %}
+
+{% assign found_a_collection = false %}
+{% if collection and collection.all_products_count > 1 %}
+    {% unless exclusions contains collection.handle %}
+        {% assign found_a_collection = true %}
+    {% endunless %}
+{% endif %}
+
+{% unless found_a_collection %}
+    {% for c in product.collections %}
+        {% unless exclusions contains c.handle or c.all_products_count < 2 %}
+            {% assign found_a_collection = true %}
+            {% assign collection = c %}
+            {% break %}
+        {% endunless %}
+    {% endfor %}
+{% endunless %}
+
+{% comment %}
+  If we have a relevant collection.
+{% endcomment %}
+
+    {% if found_a_collection %}
+    <div class="related-products" itemscope itemtype="http://schema.org/Product" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+        <div class="utility-close"></div>
+        <h4>{{- settings.related_title -}}</h4>
+        {% assign current_product = product %}
+        {% assign counter = 0 %}
+
+        {% capture related_items %}
+        <div class="grid-system">
+          
+          <div id="cross-sell-wrap">
+			{% include 'cross-sell' %}
+		  </div>  
+          
+          
+          {% comment %}
+            {% for product in collection.products %}
+                {% assign skip_product = false %}
+                {% if max_products == counter %}
+                    {% break %}
+                {% endif %}
+
+                {% unless product.handle == current_product.handle %}
+                {% unless same_vendor and current_product.vendor != product.vendor %}
+                {% unless same_type and current_product.type != product.type %}
+
+                {% for skip in skip_tags %}
+                    {% if product.tags contains skip %}
+                        {% assign skip_product = true %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if skip_product == false %}
+                    {% include 'product-related-item' %}
+                    {% assign counter = counter | plus: 1 %}
+                {% endif %}
+
+                {% endunless %}
+                {% endunless %}
+                {% endunless %}
+            {% endfor %}
+          {% endcomment %}
+        </div>
+        {% endcapture %}
+
+        {% assign related_items = related_items | trim %}
+
+        {% unless related_items == blank %}
+        {{- related_items -}}
+        {% endunless %}
+
+    </div>
+    {% endif %}
+  
+{% endif %}

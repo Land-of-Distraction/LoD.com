@@ -1,0 +1,57 @@
+{% if(settings.product_sizechart_enable && !isGiftCard) %}
+<div class="size-chart pdp-utility" id="size-chart" role="dialog">
+	<div class="description-wrapper">
+		<h3 class="size-chart-title">{{settings.product_sizechart_title}}</h3>
+		<p class="size-chart-intro">{{settings.product_sizechart_intro}}</p>
+		
+		<div class="inner-wrapper tab-container size-chart-tabs">
+	        {% assign guide_content = settings.product_sizechart_content | split: '[tab]' %}
+	        {% if guide_content.size > 1 %}
+
+				{% for content in guide_content %}
+					{% if forloop.first %}
+		            	{{ content }}
+		        	{% else %}
+						{% assign display_tabs_next = true %}
+		        	{% endif %}
+				{% endfor %}
+				
+				{% if display_tabs_next %}
+			
+			        <div class="tab-titles">
+				        {% for desc in guide_content %}
+				        
+							{% if forloop.first %}
+							{% else %}
+						        {% assign tab_title = desc | split: '[/tab]' %}
+						        <div {% if forloop.index == 2 %}class="active"{% endif %} data-tab="{{ tab_title[0] | strip_html | handle }}">
+						            {{ tab_title[0] | strip_html }}
+						        </div>
+							{% endif %}
+
+
+				        {% endfor %}
+			        </div>
+			        <div class="tabs-content">
+			            {% for desc in guide_content %}
+			            	{% if forloop.first %}
+							{% else %}
+					            {% assign tab_content = desc | split: '[/tab]' %}
+					            <h4 class="tab-toggle{% if forloop.index == 2  %} toggle-active{% endif %}">{{ tab_content[0] | strip_html }}</h4>
+					            <div {% if forloop.index == 2  %}class="active"{% endif %} data-tab="{{ tab_content[0] | strip_html | handle }}">
+					                {{ tab_content[1] }}
+					            </div>
+							{% endif %}
+					    {% endfor %}
+			        </div>
+
+			    {% endif %}
+
+	        {% else %}
+	            {{ settings.product_sizechart_content }}
+	        {% endif %}
+
+	    </div><!-- .tab-container -->
+	</div>
+</div><!-- .modal.size-chart -->
+{% endif %}

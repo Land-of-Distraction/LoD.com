@@ -1,0 +1,174 @@
+{% schema %}
+{
+  "name": "Video Module",
+  "settings": [
+    {
+      "type": "radio",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" }
+      ],
+      "default":  "black",
+      "id": "header_color",
+      "label": "Header Font Color"
+    },
+    {
+        "type": "radio",
+        "options": [
+          { "value": "white", "label": "White" },
+          { "value": "black", "label": "Black" }
+        ],
+        "default":  "black",
+        "id": "text_color",
+        "label": "Module text color"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Call to Action caption and button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text" ,
+      "label": "Call to action text",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Call to action link"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_enable_1",
+      "label": "Enable Video",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "video_url_1",
+      "label": "Video URL (Youtube, Vimeo, Self hosted)",
+      "info": "For YouTube/Vimeo videos copy the URL from the browser bar"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_image_1",
+      "label": "Poster image",
+      "info": "Will show as poster image if the video doesn't loads or doesn't autoplays. Recommended size: 1920x1200"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_enable_2",
+      "label": "Enable Video",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "video_url_2",
+      "label": "Video URL (Youtube, Vimeo, Self hosted)",
+      "info": "For YouTube/Vimeo videos copy the URL from the browser bar"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_image_2",
+      "label": "Poster image",
+      "info": "Will show as poster image if the video doesn't loads or doesn't autoplays. Recommended size: 1920x1200"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "module_caption",
+      "name": "Caption",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "radio",
+          "options": [
+            { "value": "right", "label": "Right" },
+            { "value": "center", "label": "Center" },
+            { "value": "left", "label": "Left" }
+          ],
+          "default":  "center",
+          "id": "text_alignment",
+          "label": "Text Alignment"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        }
+
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Module",
+      "category": "Homepage Modules",
+      "settings": {
+        
+      }
+    }
+  ]
+}
+{% endschema %}
+<section class="module video-module {{section.settings.text_color}}" data-header-color="{{section.settings.header_color}}-header">  
+
+  {% assign module_link = section.settings.cta_link %}
+
+      {% assign video = section.settings.video_url_1 %}
+      {% assign video_container_class = 'video1' %}
+      {% if section.settings.video_image_1 %}
+        {% assign poster_image = section.settings.video_image_1 | img_url: 'master' %}
+      {% endif %}
+      {% if section.settings.video_enable_1 %}
+        {%- include 'video-module' -%}
+      {% endif %}
+
+      {% assign video = section.settings.video_url_2 %}
+      {% assign video_container_class = 'video2' %}
+      {% if section.settings.video_image_2 %}
+        {% assign poster_image = section.settings.video_image_2 | img_url: 'master' %}
+      {% endif %}
+      {% if section.settings.video_enable_2 %}
+        {%- include 'video-module' -%}
+      {% endif %}
+
+      
+      <div class="caption-blocks">
+      {% for block in section.blocks limit: section.blocks.size %}
+        {% if block.type == 'module_caption' %}
+            <div class="caption align-{{block.settings.text_alignment}}">{{block.settings.title}}</div>
+        {% endif %}
+      {% endfor %}
+      </div>
+
+      {% assign anim_type = 'fade-up' %}
+      {% comment %}
+      {% if block.settings.text_position != 'center' %}
+        {% assign anim_type = 'fade-' | append: block.settings.text_position %}
+      {% endif %}
+      {% endcomment %}
+
+      {% if module_link %}<a href="{{module_link}}" class="section-link">{% endif %}
+
+      {% if section.settings.cta_text %}
+        <div class="section-cta" data-aos="{{anim_type}}">{{section.settings.cta_text}}</div>
+      {% endif %}
+
+      {% if module_link %}</a>{% endif %}
+  
+</section>

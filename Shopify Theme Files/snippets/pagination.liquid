@@ -1,0 +1,4 @@
+<div id="loadmore" class="collection-load-more">load more</div>
+<div class="collection-pagination hide">
+    {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+</div>

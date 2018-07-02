@@ -1,0 +1,114 @@
+{% schema %}
+{
+  "name": "Images with Background",
+  "settings": [
+    {
+      "type": "radio",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" }
+      ],
+      "default":  "black",
+      "id": "header_color",
+      "label": "Header Font Color"
+    },
+    {
+      "type": "radio",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" }
+      ],
+      "default":  "black",
+      "id": "text_color",
+      "label": "Module text color"
+    },
+    {
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "Type 1" },
+        { "value": "2", "label": "Type 2" },
+        { "value": "3", "label": "Type 3" },
+        { "value": "4", "label": "Type 4" }
+      ],
+      "default":  "1",
+      "id": "layout_type",
+      "label": "Layout Type"
+    },
+    {
+      "type": "radio",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" },
+        { "value": "olive", "label": "Olive" },
+        { "value": "maroon", "label": "Maroon" }
+      ],
+      "default":  "black",
+      "id": "bg_color",
+      "label": "Background Color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "module_image",
+      "name": "Image",
+      "limit": 3,
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background image"
+        },
+        {
+            "type": "text",
+            "id": "title" ,
+            "label": "Call to action text",
+            "default": "Explore"
+        },
+        {
+            "type": "url",
+            "id": "link",
+            "label": "Call to action link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Images with Background",
+      "category": "Homepage Modules",
+      "settings": {
+        
+      }
+    }
+  ]
+}
+{% endschema %}
+<section class="module image-bg-module {{section.settings.text_color}} layout-{{section.settings.layout_type}} {{section.settings.bg_color}}-bg" data-header-color="{{section.settings.header_color}}-header">
+  
+  {% assign image_limit = section.blocks.size %}
+  {% assign layout_type = section.settings.layout_type | plus:0 %}
+  {% if layout_type < 3 %}
+    {% assign image_limit = 2 %}
+  {% endif %}
+  <div class="images-blocks">
+  {%- for block in section.blocks limit: image_limit -%}
+    {%- assign module_link = '#' -%}
+    {%- if block.settings.link -%}
+      {%- assign module_link = block.settings.link -%}
+    {%- endif -%} 
+    {%- assign anim_type = 'fade-up' -%}
+    <div class="image-block">
+      <!-- -->
+      <div class="image-block-container">
+        <a href="{{module_link}}" data-aos="{{anim_type}}">
+          <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{block.settings.title}}">
+          {%- if block.settings.title -%}
+          <div class="block-cta">{{- block.settings.title -}}</div>
+          {%- endif -%}
+        </a>
+      </div>
+    </div>
+  {%- endfor -%}
+  </div>
+  
+</section>

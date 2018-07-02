@@ -1,0 +1,216 @@
+{% comment %}
+<!-- Highlight Shop or Explore -->
+{% endcomment %}
+{% assign highlightTopNav = '' %}
+
+{% if collection.url or product.url %}
+{% assign highlightTopNav = 'shop' %}
+{% endif %}
+
+
+{% if page.url or article.url or blog.url %}
+{% assign highlightTopNav = 'about' %}
+{% endif %}
+
+<!-- Cart Drawer -->
+{% include 'ajax-cart-template' %}
+
+<div id="MiniCart" class="drawer drawer-right">
+    <div class="drawer-title">
+        {{ 'layout.cart.title' | t }} (<span class="minicart-count">{{cart.item_count}}</span>)
+        <div class="drawer-close">
+            <button type="button">
+                <span aria-hidden="true">x</span>
+            </button>
+        </div>
+    </div>
+    <div id="CartContainer"></div>
+</div>
+
+<!-- Mobile Drawer -->
+<div class="mobileNavWrap">
+<div id="MobileNav" class="drawer drawer-left after-search-open">
+    <div class="drawer-close">
+        <button type="button">
+            <span aria-hidden="true" class="icon icon-close"></span>
+        </button>
+    </div>
+    
+    <div class="header-utilities">
+    
+        {% comment %}
+
+        <div class="mobile-block mobile-block-currency">
+            <p class="header-block block-title selected-currency mobile-block-trigger">{{ shop.currency }}</p>
+            <div class="block-content mobile-block-children">
+                <div class="back-to">Back</div>
+            </div>
+        </div>
+        {% endcomment %}
+
+        <div class="header-block block-search">
+            <div class="mobile-search-toggle mobile-block-trigger" data-opened-text="MENU" data-closed-text="{{ 'general.search.title' | t }}">{{ 'general.search.title' | t }}</div>
+            {% assign search_id = "mobile_search" %}
+            {% include 'form-search' %}
+        </div>
+        {% if shop.customer_accounts_enabled %}
+        <div class="header-block block-account">
+            <a href="/account" class="block-title">Account</a>
+            {% comment %}
+            {% if customer %}
+                <a href="/account" class="block-title">Account</a>
+                <a href="/account/logout" class="block-title">Logout</a>
+            {% else %}
+                <a href="/account" class="block-title">Log In</a>
+            {% endif %}
+            {% endcomment %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+<header role="banner" class="site-header">
+    
+    {% include "promo-banner" %}
+    
+    <div class="header-content">
+        
+        <nav class="nav-bar" role="navigation">
+            <div class="inner-wrapper">
+                <ul class="site-nav">
+                {% for link in linklists.main-menu.links %}
+                    {% comment %}
+                        Create a dropdown menu by naming a linklist the same as a link in the parent nav
+                        - http://docs.shopify.com/manual/your-website/navigation/create-drop-down-menu
+                    {% endcomment %}
+                    {% assign child_list_handle = link.title | handleize %}
+                    {%- assign isExternal = false -%}
+                    {%- if link.url contains 'http' -%}
+                        {%- assign isExternal = true -%}
+                    {%- endif -%}
+                    {% if linklists[child_list_handle].links != blank %}
+                        <li class="level-1 has-children has-dropdown{% if link.active or highlightTopNav == child_list_handle %} active{% endif %}" aria-haspopup="true">
+                            <a class="nav-link" href="{{ link.url }}"{%- if isExternal -%} target="_blank" {% endif %}><span>{{ link.title }}</span></a>
+                            <ul class="children">
+                                {% assign counter = 1 %}
+                                {% for childlink in linklists[child_list_handle].links %}
+                                    {% assign mod = forloop.index | modulo:settings.nav_divider %}
+                                    <li class="level-2 {% if link.active %} active {% endif %} column-{{ counter }}" data-column="{{ counter }}">
+                                        <a href="{{ childlink.url }}" class="nav-link"><span>{{ childlink.title | escape }}</span></a>
+                                    </li>
+                                    {% if mod == 0 %}
+                                        {% assign counter = counter | plus: 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="level-1 {% if link.active %} active {% endif %}">
+                            <a href="{{ link.url }}" class="nav-link"{%- if isExternal -%} target="_blank" {% endif %}><span>{{ link.title }}</span></a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                    <li class="level-1 hide-desktop">
+                        <a href="/account" class="nav-link">Account</a>
+                    </li>
+                    <li class="level-1 has-children has-dropdown hide-desktop mobile-newsletter">
+                        <a href="#" class="nav-link newsletter-toggle"><span>{{ 'general.newsletter_form.title' | t }}</span></a>
+                        <ul class="children">
+                            <li>{%- include 'form-newsletter' -%}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav><!-- .nav-bar -->
+        
+        <!-- Site logo and title -->
+        {% if template.name == 'index' %}
+        <h1 itemscope itemtype="http://schema.org/Organization">
+        {% else %}
+        <div class="h1" itemscope itemtype="http://schema.org/Organization">
+        {% endif %}
+            <a href="/" itemprop="url" class="site-logo{% if settings.logo != blank %} site-header__logo-image{% endif %}">
+                {% comment %}
+                <span class="screen-reader-text">{{ shop.name }}</span>
+                {% if settings.logo != blank %}
+                    {% capture image_size %}{{ settings.logo_max_width }}x{% endcapture %}
+                    <img src="{{ settings.logo | img_url: image_size }}"
+                        srcset="{{ settings.logo | img_url: image_size }} 1x, {{ settings.logo | img_url: image_size, scale: 2 }} 2x"
+                        alt="{{ settings.logo.alt | default: shop.name }}"
+                        itemprop="logo">
+                {% endif %}
+                {% endcomment %}
+            </a>
+        {% if template.name == 'index' %}
+        </h1>
+        {% else %}
+        </div>
+        {% endif %}
+        <!-- Site logo and title End -->
+        
+        <div class="header-utilities" >
+            <div class="header-block block-mobile-nav">
+                <a class="block-title menu-toggle" aria-controls="NavDrawer" aria-expanded="false" href="">
+                    <span></span>
+                </a>
+            </div>
+            
+            {% comment %}
+            <!-- <div class="header-block block-currency">
+                <div class="block-title currency-toggle ">
+                    <span class="switch-dropdown-wrapper"><span class="selected-currency">{{ shop.currency }}</span><span class="icon-dropdown">&#xe902;</span></span>
+                    {% include 'mlveda-currencies-switcher' %}
+                </div>
+            </div> -->
+            {% endcomment %}
+            
+            <div class="header-block block-search">
+                <a class="block-title search-toggle" href="">{{ 'general.search.title' | t }}</a>
+
+                {% assign search_id = "desktop_search" %}
+                {% include 'form-search' %}
+
+            </div><!-- .block-search -->
+            
+            {% if shop.customer_accounts_enabled %}
+            <div class="header-block block-account has-dropdown">
+                <a href="/account" class="block-title">{{ 'general.account.title' | t }}</a>
+
+                {% comment %}
+                <!-- <div class="header-block block-account has-dropdown"> -->
+                {% if customer %}
+                    <a href="/account" class="block-title">{{ 'general.account.title' | t }}</a>
+                    <div class="block-content dropdown">
+                        {% if customer.first_name != blank %}
+                            {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
+                            {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+                        {% else %}
+                            <a href="/account">{{ 'layout.customer.account' | t }}</a>
+                        {% endif %}
+                        {{ 'layout.customer.log_out' | t | customer_logout_link }}
+                    </div>
+                {% else %}
+                    <a href="/account" class="block-title">Log In</a>
+                    <div class="block-content dropdown">
+                        {{ 'layout.customer.log_in' | t | customer_login_link }}
+                        {{ 'layout.customer.create_account' | t | customer_register_link }}
+                    </div>
+                {% endif %}
+                {% endcomment %}
+
+            </div><!-- .block-account -->
+         {% endif %}   
+            
+            <div class="header-block block-minicart" aria-controls="MiniCart" aria-expanded="false">
+                <a href="javascript:;" class="block-title">
+                    <span id="CartTitle">{{ 'layout.cart.title' | t }}</span>
+                    <span id="CartCount" class="minicart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">{{ cart.item_count }}</span>
+                    <span id="CartCost">{{ cart.total_price | money }}</span>
+                </a>
+            </div><!-- .block-minicart" -->
+        </div><!-- .header-utilities -->
+
+    </div><!-- .header-content -->
+    
+</header>

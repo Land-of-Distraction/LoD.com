@@ -1,0 +1,18 @@
+<div class="block-content search-wrapper">
+    <button type="button" class="search-close">
+        <span class="icon-close" aria-hidden="true"></span>
+    </button>
+    <form action="/search" method="get" role="search" class="search-form">
+        <input type="text"
+            {% if search_id %}id="{{-search_id-}}"{% endif %}
+            name="q"
+            class="search-field" 
+            value="{{ search.terms | escape }}"
+            placeholder="{{ 'general.search.placeholder' | t }}"
+            aria-label="{{ 'general.search.placeholder' | t }}" autocomplete="off">
+        <input type="hidden" name="type" value="product">
+        <button type="submit" class="btn">
+            <span class="icon-lod-arrow-right">{{ 'general.search.submit' | t }}</span>
+        </button>
+    </form>
+</div>

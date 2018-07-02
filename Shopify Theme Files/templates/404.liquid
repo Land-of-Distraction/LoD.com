@@ -1,0 +1,19 @@
+{% comment %}
+<!-- Author windsor@1r - 404 page -->
+<!-- /templates/404.liquid -->
+{% endcomment %}
+<div class="page-with-background error-page" {% if settings.background_image %} style="background-image:url('{{ settings.background_image | img_url: 'master' }}');" {% endif %}>
+	<div class="error-message-wrapper">
+
+		<h1 class="error-main">{{ 'general.404.main_message_html' | t }}</h1>
+
+        {% assign continue_link = shop.url %}
+        {% if settings.continue_shopping_link %}
+            {% assign continue_link = settings.continue_shopping_link %}
+        {% endif %}
+		<a href="{{continue_link}}" class="cta">Back to home</a>
+
+	</div>
+</div><!-- .error-page -->
+
+

@@ -1,0 +1,34 @@
+<footer class="site-footer" role="contentinfo">
+    <div class="wrapper">
+        <div class="footer-block footer-newsletter">
+            {%- include 'form-newsletter' -%}
+        </div>
+        <div class="footer-block footer-links">
+            <a class="newsletter-toggle" href="#">{{ 'general.newsletter_form.title' | t }}</a>
+            {%- assign footer_linklist = settings.footer_linklist -%}
+            {% if linklists[footer_linklist].links.size > 0 %}
+                {% for link in linklists[footer_linklist].links %}
+                    {%- assign isExternal = false -%}
+                    {%- if link.url contains 'http' -%}
+                        {%- assign isExternal = true -%}
+                    {%- endif -%}
+                    <a href="{{ link.url }}"{%- if isExternal -%} target="_blank" {% endif %}>{{ link.title }}</a>
+                {% endfor %}
+            {% endif %}
+            <div class="copyright">&copy; {{ shop.name }} {{ 'now' | date: "%Y" }}</div>
+        </div>
+        <div class="footer-block social-links">
+            {%- assign social_accounts = 'Instagram, Facebook, Twitter, Pinterest, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+            {% for social in social_accounts %}
+                {%- assign social_handle = social | handleize -%}
+                {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+                {% if settings[social_link] != blank %}
+                    <a href="{{ settings[social_link] }}" class="icon-{{ social_handle }}" target="_blank" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
+                        <span class="fallback-text">{{ social }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</footer>
+<!-- .site-footer -->

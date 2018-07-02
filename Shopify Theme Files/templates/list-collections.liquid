@@ -1,0 +1,43 @@
+{% comment %}
+<!-- Author windsor@1r - List all colllections page -->
+<!-- /templates/list-collections.liquid -->
+{% endcomment %}
+{% comment %}
+  This page represents the /collections and /products pages.
+{% endcomment %}
+
+
+<div class="list-collections"> 
+{% for collection in collections %}
+  {% unless collection.handle == 'frontpage' %}
+  {% else %}
+  {% assign num_products = collection.products | size %}
+  {% if num_products > 0 %}
+  <div class="collection-wrapper"> 
+
+    {% capture collection_title %}
+      {{ collection.title | escape }}
+    {% endcapture %}
+
+    <h2 class="collection-title">{{ collection_title }}</h2>
+
+    <div class="collection-products">
+      {% for product in collection.products limit:4 %}
+
+        {% assign all_tags = product.tags | downcase %}
+        {% if all_tags contains 'in grid promo' %}
+        {% else %}
+            {% include 'product-grid-item' %}
+        {% endif %}
+
+      {% endfor %}
+    </div>
+    <div class="cta-wrapper">
+      <a href="{{ collection.url }}" class="" role="button" title="{{ 'collections.general.link_title' | t: title: collection_title }}">View all</a>
+    </div>
+  
+  </div>
+  {% endif %}
+  {% endunless %}
+{% endfor %}
+</div>

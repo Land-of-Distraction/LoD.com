@@ -1,0 +1,32 @@
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+    {% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available %}
+    {% assign sold_out = false %}
+{% endif %}
+
+<article class="item" data-handle="{{ product.handle }}" data-id="{{ product.id }}">
+
+    <a href="{{ product.url | within: collection }}">
+        <div class="product-image-wrapper single-image">
+            <img src="{{ product.featured_image.src | img_url: '400x' }}" alt="{{ product.featured_image.alt | escape }}">            
+        </div>
+        <div class="product-info-wrapper">
+            <div class="product-name">{{ product.title }}</div>
+            <div class="price-box">
+                {% if on_sale %}
+                <span class="product-compare-price">
+                    {{- product.compare_at_price | money_with_currency  | remove: '.00' | replace: '$','' -}}
+                </span>
+                {% endif %}
+                <span class="product-price" itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                    {{- product.price | money_with_currency | remove: '.00' | replace: '$','' -}}
+                </span>
+            </div>
+        </div>
+    </a>
+
+</article>

@@ -1,0 +1,140 @@
+<div class="alert-message quickshopbox">
+    <div>
+        <% product = content.content %>
+        <% current_variant = product.variants ? product.variants[0] : product %>
+        
+        <div class="quickshop-container">
+            
+            <div itemscope itemtype="http://schema.org/Product">
+
+                <meta itemprop="url" content="<%= product.url %>">
+                <meta itemprop="image" content="<%= product.images[0] %>">
+
+                <div class="grid product-single">
+                    
+                    <div class="grid__item large--one-half text-center product-media">
+                        <div class="product-single__photos" id="ProductPhoto">
+                            <% featured_image = product.featured_image %>
+                            <img src="<%= featured_image %>" alt="" id="ProductPhotoImg">
+                        </div>
+
+                        <% if (product.images.length > 1) { %>
+                        <ul class="product-single__thumbnails grid-uniform" id="ProductThumbs">
+                            <% _.each(product.images, function(image){ %>
+                            <li class="grid__item one-quarter">
+                                <a href="<%= image %>" class="product-single__thumbnail" alt="">
+                                    <img src="<%= image %>" >
+                                </a>
+                            </li>    
+                            <% }) %>
+                        </ul>
+                        <% } %>
+                    </div>
+                    
+                    <div class="grid__item large--one-half">
+
+                        <h1 itemprop="name"><%= product.title %></h1>
+
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                            
+                            <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+
+                            <link itemprop="availability" href="http://schema.org/<%= product.available ? 'InStock' : 'OutOfStock' %>">
+
+                            <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-vertical">
+                                
+                                <!-- Swatches -->
+                                <% productExtra = product.extraData.product %>
+                                <% colorNum = 2 %>
+                                <% _.each(productExtra.options, function(option,index){ %>
+                                    <% optionName = option.name.toLowerCase() %>
+                                    <%= optionName %>
+                                    <% if (optionName == "color") { %>
+                                        <% colorNum = index %>
+                                    <% } %>
+                                <% }) %>    
+                                <%= colorNum %>
+                                
+                                <% if (product.available) { %>
+                                    <% _.each(productExtra.options, function(option,index){ %>
+                                        <% optTitle = option.name.toLowerCase() %>
+                                		<div class="selector-wrapper 1r-swatch">
+                                			<div class="swatch-label"><%= option.name %></div>
+                                            <% if (optTitle == "color") { %>
+                                                <ul class="swatches colors clearfix" data-option="<%= index %>">
+                                                    <% activeClass = "active" %>
+                                                    <% _.each(option.values, function(value){ %>
+                                                        <% swatchImg = "" %>
+                                                        <% _.each(product.variants, function(variant){ %>
+                                                            <% optionIndex = colorNum %>
+                                                            <% if (variant.available && variant.options[optionIndex]) { %>
+                                                                <% swatchImg = variant.featured_image.src %>
+                                                            <% } %>
+                                                        <% }) %>
+                                						<% if (swatchImg != '') { %>
+                                							<li data-select="<%= value.toLowerCase() %>" data-name="<%= value %>" data-image="<%= swatchImg %>" class="swatch swatch-<%= value.toLowerCase() %> <%= activeClass %>"><span class="tooltip hidden"><%= value %></span></li>
+                                						    <% activeClass = "" %>
+                                                        <% } %>
+                                                    <% }) %>
+                                				</ul>
+                                            <% } else { %>
+                                                <ul class="swatches <%= optTitle %>s clearfix" data-option="<%= index %>">
+                                					<% activeClass = "active" %>
+                                                    <% _.each(option.values, function(value){ %>
+                                						<li data-select="<%= value.toLowerCase() %>" data-name="<%= value %>" class="swatch swatch-<%= value.toLowerCase() %> <%= activeClass %>"><%= value %></li>
+                                					    <% activeClass = "" %>
+                                                    <% }) %>
+                                				</ul>
+                                            <% } %>
+                                		</div>
+                                    <% }) %>
+                                <% } %>
+                                <!-- Swatches End -->
+
+                                <select name="id" id="productSelect" class="product-single__variants">
+                                <% _.each(product.variants, function(variant){ %>
+                                    <% if (variant.available) { %>
+                                    <option <% if (variant == current_variant) { %>selected="selected"<% } %> data-sku="<%= variant.sku %>" value="<%= variant.id %>">
+                                        <%= variant.title %> - <%= Shopify.formatMoney(variant.price) %>
+                                    </option>
+                                    <% } else { %>
+                                    <option disabled="disabled">
+                                        <%= variant.title %> - Sold Out
+                                    </option>    
+                                    <% } %>
+                                <% }) %>
+                                </select>
+                                
+                                <span class="visually-hidden">Regular price</span>
+                                
+                                <span id="ProductPrice" class="h2" itemprop="price" content="<%= current_variant.price/100 %>">
+                                    <%= Shopify.formatMoney(current_variant.price) %>
+                                </span>
+                                
+                                <% if ( product.compare_at_price_max > product.price ) { %>
+                                <span class="visually-hidden">Special Price</span>
+                                <p id="ComparePrice">
+                                    Compare <%= current_variant.compare_at_price %>
+                                </p>
+                                <% } %>
+
+                                <label for="Quantity" class="quantity-selector">Quantity</label>
+                                <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+
+                                <button type="submit" name="add" id="AddToCart" class="btn">
+                                    <span id="AddToCartText">Add to Cart</span>
+                                </button>
+                                
+                            </form>
+                        </div>
+
+                        <div class="product-description rte" itemprop="description"><%= product.description %></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

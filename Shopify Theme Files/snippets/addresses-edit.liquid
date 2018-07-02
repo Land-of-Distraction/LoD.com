@@ -1,0 +1,109 @@
+<div id="EditAddress_{{ address.id }}" class="address-form hide">
+  {% form 'customer_address', address %}
+
+  <div class="form-fields form-lod">
+    <h3>{{ 'customer.addresses.edit_address' | t }}</h3>
+
+    <label for="AddressFirstName_{{ form.id }}"
+           class="label-hidden">{{ 'customer.addresses.first_name' | t }}</label>
+    <input type="text"
+           name="address[first_name]"
+           class="input-field"
+           id="AddressFirstName_{{ form.id }}"
+           value="{{ form.first_name }}"
+           required="required">
+
+    <label for="AddressLastName_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.last_name' | t }}</label>
+    <input type="text"
+           name="address[last_name]"
+           class="input-field"
+           id="AddressLastName_{{ form.id }}"
+           value="{{ form.last_name }}">
+
+    <label for="AddressCompany_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.company' | t }}</label>
+    <input type="text"
+           name="address[company]"
+           class="input-field"
+           id="AddressCompany_{{ form.id }}"
+           value="{{ form.company }}">
+
+    <label for="AddressAddress1_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.address1' | t }}</label>
+    <input type="text"
+           name="address[address1]"
+           class="input-field"
+           id="AddressAddress1_{{ form.id }}"
+           value="{{ form.address1 }}"
+           required="required">
+
+    <label for="AddressAddress2_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.address2' | t }}</label>
+    <input type="text"
+           name="address[address2]"
+           class="input-field"
+           id="AddressAddress2_{{ form.id }}"
+           value="{{ form.address2 }}"
+          placeholder="{{ 'customer.addresses.address2' | t }}">
+
+    <label for="AddressCity_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.city' | t }}</label>
+    <input type="text"
+           name="address[city]"
+           class="input-field"
+           id="AddressCity_{{ form.id }}"
+           value="{{ form.city }}">
+
+    <label for="AddressCountry_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.country' | t }}</label>
+    <div class="select-input">
+      <select
+              name="address[country]"
+              id="AddressCountry_{{ form.id }}"
+              class="address-country-option input-field"
+              data-form-id="{{ form.id }}"
+              data-default="{{ form.country }}">
+          {{ country_option_tags }}
+      </select>
+    </div>
+
+    <div id="AddressProvinceContainer_{{ form.id }}" style="display: none" class="select-input">
+      <label for="AddressProvince_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.province' | t }}</label>
+      <select
+        name="address[province]"
+        class="input-field"
+        id="AddressProvince_{{ form.id }}"
+        data-default="{{ form.province }}">
+      </select>
+    </div>
+
+    <label for="AddressZip_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.zip' | t }}</label>
+    <input type="text"
+           name="address[zip]"
+           class="input-field"
+           id="AddressZip_{{ form.id }}"
+           value="{{ form.zip }}"
+           required="required"
+           autocapitalize="characters">
+
+    <label for="AddressPhone_{{ form.id }}" class="label-hidden">{{ 'customer.addresses.phone' | t }}</label>
+    <input type="tel"
+           name="address[phone]"
+           class="input-field"
+           id="AddressPhone_{{ form.id }}"
+           value="{{ form.phone }}"
+           pattern="[0-9\-]*">
+
+    <label for="address_default_address_{{ form.id }}" class="address-cta checkbox">
+      {{ form.set_as_default_checkbox }}
+      <div class="check-mark"></div>
+      {{ 'customer.addresses.set_default' | t }}
+    </label>
+
+  </div><!-- .form-fields -->
+
+  <div class="account-actions">
+    <input type="submit" class="cta-white edit-submit" value="{{ 'customer.addresses.update' | t }}">
+    <button type="button" class="address-edit-toggle cta-gray" data-form-id="{{ form.id }}">
+        {{ 'customer.addresses.cancel' | t }}
+    </button>
+  </div>
+
+  {% endform %}
+
+</div><!-- #EditAddress_ -->

@@ -1,0 +1,128 @@
+{% comment %}
+<!-- Account landing page -->
+<!-- /templates/account.liquid -->
+{% endcomment %}
+<div class="account-page account-home">
+  <div class="inner-content">
+
+    <h1 class="hide">{{ 'customer.account.title' | t }}</h1>
+
+    <div class="tab-container">
+
+      <div class="tab-titles">
+        <a href="/account/addresses" class=""><span>{{ 'customer.account.view_addresses' | t }}</span></a>
+        <a href="#" class="active" data-tab="tab-orders"><span>{{ 'customer.orders.title' | t }}</span></a>
+        {{ 'layout.customer.log_out_html' | t | customer_logout_link }}
+      </div>
+
+      <div class="tabs-content">
+
+        <div id="tab-details" class="tab">
+
+          <div class="customer-info">
+            <h2 class="hide">{{ 'customer.account.details' | t }}</h2>
+            {% if customer.default_address != nil %}
+            <div class="addresses-list">
+              <div class="address-box">
+                <h3 class="customer-title">
+                    {{ customer.name }} - {{ 'customer.addresses.default' | t }}
+                </h3>
+                <p>
+                    {% if address.company != nil %}
+                        {{ address.company }}<br>
+                    {% endif %}
+                    {{ customer.default_address.address1 }}<br>
+                    {% if customer.default_address.address2 != "" %}
+                        {{ customer.default_address.address2 }}<br>
+                    {% endif %}
+                    {% if customer.default_address.city != "" %}
+                        {{ customer.default_address.city }},
+                    {% endif %}
+                    {% if customer.default_address.province_code != "" %}
+                        {{ customer.default_address.province_code | upcase }}<br>
+                    {% endif %}
+                    {% if customer.default_address.zip != "" %}
+                        {{ customer.default_address.zip | upcase }}<br>
+                    {% endif %}
+                    {% if customer.default_address.country != "" %}
+                        {{ customer.default_address.country }}<br>
+                    {% endif %}
+                    {% if customer.default_address.phone != "" %}
+                        {{ customer.default_address.phone }}
+                    {% endif %}
+                </p>
+              </div>
+            </div>
+            <div class="no-orders">
+              <a href="/account/addresses" class="cta-white">{% if customer.addresses_count == 0 %}{{ 'customer.addresses.manage' | t }}{% else %}{{ 'customer.account.manage_addresses' | t }} ({{ customer.addresses_count }}){% endif %}</a>
+            </div>
+            {% else %}
+            <div class="no-orders">
+              <div class="no-orders-message">
+                <p>You have no registered addresses.</p>
+              </div>
+              <a href="/account/addresses" class="cta-white">{% if customer.addresses_count == 0 %}{{ 'customer.addresses.manage' | t }}{% else %}{{ 'customer.account.manage_addresses' | t }} ({{ customer.addresses_count }}){% endif %}</a>
+            </div>
+            {% endif %}
+          </div>
+        </div><!-- #tab-details -->
+
+        <div id="tab-orders" class="tab active">
+            {% comment %}
+          If we have past orders, loop through each one
+            {% endcomment %}
+
+            {% paginate customer.orders by 20 %}
+            {% if customer.orders.size != 0 %}
+
+              <div class="table-wrap">
+                <table class="full order-list">
+                  <thead>
+                  <tr>
+                    <th>{{ 'customer.orders.order_number' | t }}</th>
+                    <th>{{ 'customer.orders.date' | t }}</th>
+                    <th>{{ 'customer.orders.payment_status' | t }}</th>
+                    <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                    <th class="item-total">{{ 'customer.orders.total' | t }}</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for order in customer.orders %}
+                    <tr>
+                      <td data-thead="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+                      <td data-thead="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                      <td data-thead="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                      <td data-thead="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                      <td data-thead="{{ 'customer.orders.total' | t }}" class="item-total">{{ order.total_price | money }}</td>
+                      <td class="view-details">{{ 'View Details' | link_to: order.customer_url }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+            {% else %}
+
+              <div class="no-orders">
+                <div class="no-orders-message">
+                  <p>{{ 'customer.orders.none' | t }}</p>
+                </div>
+                <a href="/" class="cta-white">{{ 'customer.orders.continue_browsing' | t }}</a>
+              </div>
+
+            {% endif %}
+
+            {% if paginate.pages > 1 %}
+                {% include 'pagination' %}
+            {% endif %}
+
+            {% endpaginate %}
+
+        </div><!-- #tab-orders -->
+
+      </div><!-- .tabs-content -->
+    </div><!-- .tabs-container -->
+
+  </div><!-- .inner-content -->
+</div><!-- .login-page -->

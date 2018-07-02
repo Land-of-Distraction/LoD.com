@@ -1,0 +1,20 @@
+<div id="iStock-wrapper" style="display:none;">
+	<h2>Out Of Stock!</h2>
+	<p id="iStock-notifyTxt">We will notify you when this product becomes available.</p>
+	<div id="iStock-availability" style="display:none">
+		<label>Availability Date: </label>
+		<span></span>
+	</div>
+	<div id="iStock-fields">
+		<input type="text" id="iStock-email-id" name="iStock-email-id" placeholder="Email Address" value="{% if customer %}{{ customer.email }}{% endif %}" />
+		<input type="hidden" id="iStock-product" name="iStock-product" value="{{ product.title | escape }}" />
+		<input type="button" id="iStock-notify-btn" value="Notify Me" />
+	</div>
+	<div id="iStock-msg"></div>
+</div>
+<script type="text/javascript">
+	var iStockShop = "{{ shop.permanent_domain }}";
+	var iStockProductId = {{ product.id }};
+	var iStockVariants = {{ product.variants | json }};
+</script>
+<script src="https://istock.shopapps.in/front/iStock-notify.php?shop={{ shop.permanent_domain }}"></script>

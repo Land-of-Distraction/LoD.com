@@ -1,0 +1,42 @@
+{% comment %}
+<!-- Sign Up / Register page -->
+<!-- /templates/register.liquid -->
+{% endcomment %}
+<div class="login-page register">
+  <div class="inner-content">
+
+    <div class="form-fields form-lod">
+      <h1>{{ 'customer.register.title' | t }}</h1>
+        {% form 'create_customer' %}
+
+        {{ form.errors | default_errors }}
+
+      <div class="form-fields">
+
+        <label for="FirstName" class="label-hidden">{{ 'customer.register.first_name' | t }}</label>
+        <input type="text" name="customer[first_name]" id="FirstName" class="input-field" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus required>
+
+        <label for="LastName" class="label-hidden">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" name="customer[last_name]" id="LastName" class="input-field" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} required>
+
+        <label for="Email" class="label-hidden">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="Email" class="input-field{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" value="{% if form.email %}{{ form.email }}{% endif %}" autocorrect="off" required="required">
+
+        <label for="CreatePassword" class="label-hidden">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="CreatePassword" class="input-field{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.register.password' | t }}" required="required">
+
+      </div>
+
+      <div class="account-actions">
+        <input type="submit" value="{{ 'customer.register.submit' | t }}" class="cta-white">
+      </div>
+
+      <div class="alt-actions">
+        <span>{{ 'customer.register.has_account' | t }} {{ 'customer.login.sign_in' | t | customer_login_link }}</span>
+      </div>
+
+        {% endform %}
+    </div><!-- .form-lod -->
+
+  </div><!-- .inner-content -->
+</div><!-- .login-page -->

@@ -1,0 +1,118 @@
+{% comment %}
+<!-- Author windsor@1r - Gitf Card Landing page -->
+<!-- /templates/gift_card.liquid -->
+{% endcomment %}
+{% comment %}
+  QR code is rendered in `#QrCode`
+
+  `gift_card.pass_url` is true if apple wallet is enabled for the shop
+{% endcomment %}
+
+{% layout 'gift_card' %}
+
+{%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+{% assign gift_card_handle = "gift-card" %}
+
+<header class="giftcard-header" role="banner">
+  <div class="header-logo" itemscope itemtype="http://schema.org/Organization">
+    <a href="{{ shop.url }}" itemprop="url" title="Shop {{ shop.name }}">
+      {% if settings.logo_use_image %}
+        <!-- <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo"> -->
+      {% else %}
+        <!-- {{ shop.name }} -->
+      {% endif %}
+      <div class="icon icon-lod"></div>
+    </a>
+  </div>
+  <div class="shop-url">{{ shop.url }}</div>
+</header>
+
+<main class="giftcard {% if gift_card.expired or gift_card.enabled != true %} giftcard--disabled{% endif %}" role="main" id="MainContent">
+  <div class="giftcard__content">
+
+    <h1 class="giftcard__title">{{ 'gift_cards.issued.subtext' | t: shop: shop.name }}</h1>
+
+    <!-- <h2>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value, shop: shop.name }}</h2> -->
+    {% unless gift_card.enabled %}
+      <span class="giftcard__tag">{{ 'gift_cards.issued.disabled' | t }}</span>
+    {% endunless %}
+    
+    {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+    {% if gift_card.expired and gift_card.enabled %}
+       <span class="giftcard__tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+    {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+      <span class="giftcard__tag giftcard__tag--active">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+
+    <div class="giftcard__image">
+      {% assign giftcard_product = all_products[gift_card_handle] %}
+      <img src="{{ giftcard_product.images[1] | product_img_url: 'master' }}" alt="{{giftcard_product.featured_title}}">
+    </div>
+
+    {%- assign initial_value_size = formatted_initial_value | size -%}
+    <div class="giftcard__amount{% if initial_value_size > 6 %} giftcard__amount--medium{% endif %}">
+      {{ formatted_initial_value }}
+      {% if gift_card.balance != gift_card.initial_value %}
+        <div class="tooltip">
+          <p class="tooltip__label">{{ 'gift_cards.issued.balance' | t }} {{ gift_card.balance | money }}</p>
+          <!-- <p>{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card.balance | money }}</p> -->
+        </div>
+      {% endif %}
+    </div>
+
+    <p class="giftcard__instructions">{{ 'gift_cards.issued.redeem' | t }}</p>
+
+    {%- assign code_size = gift_card.code | format_code | size -%}
+    <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
+      <div class="giftcard__code__inner" id="GiftCardDigits">{{ gift_card.code | format_code }}</div>
+      <span>click to select and copy</span>
+    </div>
+
+    {{ if gift_card.qr_identifier }}
+    <div id="QrCode" class="giftcard-qr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+    {{ endif }}
+
+  </div>
+
+  <footer class="giftcard__footer" role="contentinfo">
+
+      <div class="giftcard__actions">
+        <a href="#" class="cta-light" onclick="window.print();">{{ 'gift_cards.issued.print' | t }}</a>
+        <a href="{{ shop.url }}" class="cta" target="_blank">{{ 'gift_cards.issued.shop_link' | t }}</a>
+      </div>
+
+      {% if gift_card.pass_url %}
+        <a class="add-to-apple-wallet" href="{{ gift_card.pass_url }}">
+          <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}">
+        </a>
+      {% endif %}
+
+  </footer>
+
+  <div class="giftcard__conditions">{{ 'gift_cards.issued.conditions_html' | t: base_url: shop.url, shop: shop.domain }}</div>
+
+</main>
+
+<script type="text/javascript">
+  /*============================================================================
+    Auto-select gift card code on click, based on ID passed to the function
+      - Use a different method depending on IE or others
+  ==============================================================================*/
+  function selectText(element) {
+    var doc = document,
+        text = doc.getElementById(element);
+
+    if (doc.body.createTextRange) { // ms
+      var range = doc.body.createTextRange();
+      range.moveToElementText(text);
+      range.select();
+    } else if (window.getSelection) { // moz, opera, webkit
+      var selection = window.getSelection(),
+          range = doc.createRange();
+      range.selectNodeContents(text);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+</script>

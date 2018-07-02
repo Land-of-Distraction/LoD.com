@@ -1,0 +1,153 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+    replace:'\/','/' | 
+    replace:'%20',' ' | 
+    replace:'\u0026','&'
+-%}
+{% assign sortedyLowerPrice = false %}
+{% if pageUrl contains 'sort_by=price-ascending' %}
+    {% assign sortedyLowerPrice = true %}
+{% endif %}
+
+{% if pageUrl contains 'usow' %}
+<div id="shopify-section" class="shopify-section">
+<section class="module image-module usow-banner">
+  <img class="product-image" src="https://cdn.shopify.com/s/files/1/2698/0276/t/3/assets/usow-header.jpg?12658521257200446257" alt="USOW">
+</section>
+</div>
+<style>
+  .usow-banner {margin-top: -30px; margin-bottom: 30px;}
+  @media screen and (min-width: 992px) {.usow-banner {margin-top: -90px;}}
+</style>
+{% endif %}
+
+
+{% paginate collection.products by 12 %}
+<div class="product-collection">
+    <div class="collection-header">
+        <h1 class="collection-title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+        <div class="collection-desc">
+            {{ collection.description }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="collection-nav">
+        <div class="collection-nav-toggle">Filter</div>
+        <div class="collection-nav-wrapper">
+            <div class="collection-nav-close"></div>
+            <div class="collection-contain">
+            {% include 'collection-filtering' %}
+            {% include 'collection-sorting' %}
+            <div class="collection-nav-block clear-all {% unless current_tags %}hide{% endunless %}">
+                <div class="nav-title clear-all-ctl">
+                    <a href="{{ collection.url }}">Clear All</a>
+                </div>
+            </div>
+            <script>
+                Shopify.queryParams = {};
+                Shopify.collectionHandle = '{{ collection.handle }}';
+                if (location.search.length) {
+                    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+                        aKeyValue = aCouples[i].split('=');
+                        if (aKeyValue.length > 1) {
+                            Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+                        }
+                    }
+                }
+                if (!jQuery.isEmptyObject(Shopify.queryParams)) {
+                    jQuery('.collection-nav-block.clear-all').removeClass('hide');
+                    jQuery('.clear-all.clear-all-sort').removeClass('hide');
+                }
+            </script>
+        </div>
+        </div>
+    </div>
+    
+    <div class="collection-products items {% if sortedyLowerPrice %}sortlowest{% endif %}">
+        {% for product in collection.products %}
+            {% assign all_tags = product.tags | downcase %}
+
+            {% if all_tags contains 'in grid promo' %}
+                {% unless sortedyLowerPrice %}
+                    {% include 'product-grid-promo' %}
+                {% endunless %}
+            {% else %}
+                {% include 'product-grid-item' %}
+            {% endif %}
+        {% else %}
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+        {% endfor %}
+      <div id="product-list-foot"></div>
+    </div>
+    
+    {% if paginate.pages > 1 %}
+        {% include 'pagination' %}
+    {% endif %}
+</div>
+
+   {% if paginate.next %}
+        <div id="more"><p>&darr; <a href="{{ paginate.next.url }}">More</a></p></div>        
+    {% endif %}
+ 
+{% endpaginate %}
+
+<script>
+  var retrievedPages = [];
+  
+          function debounce(func, wait, immediate) {
+            var timeout;
+            return function() {
+                var context = this, args = arguments;
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+  
+         function ScrollExecute() {
+           
+           if($(document).height() - 800 < ($(document).scrollTop() + $(window).height())) {
+               scrollNode = $('#more').last();    
+               scrollURL = $('#more p a').last().attr("href");
+             	if (retrievedPages.indexOf(scrollURL) >= 0) {
+               		console.log('already have page')
+             		return;
+             	}
+             
+             retrievedPages.push(scrollURL);
+             
+               if(scrollNode.length > 0) {
+                   $.ajax({
+                       type: 'GET',
+                       url: scrollURL,
+                       beforeSend: function() {
+                           scrollNode.clone().empty().insertAfter(scrollNode).append('<img src=\"{{ "loading.gif" | asset_url }}\" />');
+                           scrollNode.hide();
+                       },
+                       success: function(data) {
+                           // remove loading feedback
+                           scrollNode.next().remove();
+                           var filteredData = $(data).find("article.item");
+                         	$('#more p a').last().attr("href", $(data).find("#more p a").last().attr('href'));
+                           filteredData.insertBefore( $("#product-list-foot") );
+                         	window.dispatchEvent(new Event('resize'));
+                       },
+                       dataType: "html"
+                   });
+               }
+           }
+         }
+ 
+         $(document).ready(function () {
+           $(window).scroll(function(){
+				ScrollExecute()
+           });
+         });
+</script>

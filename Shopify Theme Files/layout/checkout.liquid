@@ -1,0 +1,89 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies {{ checkout_html_classes }}" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {% if settings.favicon != blank %}
+        <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    {% endif %}
+
+    <title>{{ shop.name }} &ndash; {{ page_title }}</title>
+
+    {{ content_for_header }}
+    {{ checkout_stylesheets }}
+    <!-- custom css stylesheets -->
+    {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'checkout.scss.css' | asset_url | stylesheet_tag }}
+    
+    {{ checkout_scripts }}
+
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+
+    {{ 'app-view-checkout.js' | asset_url | script_tag }}
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TK5BD4T');</script>
+    <!-- End Google Tag Manager -->
+
+</head>
+<body class="template-checkout">
+
+    <header class="site-header" data-header>
+      <div class="header-content">
+        <!-- Site logo and title -->
+        <h1>
+            <span class="screen-reader-text">{{ shop.name }}</span>
+            <a href="{{ shop.secure_url }}" itemprop="url" class="site-logo{% if settings.logo != blank %} site-header__logo-image{% endif %}">
+            </a>
+        </h1>
+        <!-- Site logo and title End -->
+      </div>
+    </header>
+
+    <div class="content" data-content>
+        {{ order_summary_toggle }}
+        <div class="wrap">
+            <div class="sidebar">
+                <div class="sidebar__content">
+                    {{ content_for_order_summary }}
+                </div>
+            </div>
+            <div class="main" role="main">
+                <div class="main__header">
+                    <!-- <a href="{{ wordpress_baseurl }}/">{{ content_for_logo }}</a> -->
+                    {{ breadcrumb }}
+                    {{ alternative_payment_methods }}
+                </div>
+                <div class="main__content">
+                    {{ content_for_layout }}
+                    
+                    {% if settings.checkout_notes %}
+                    <div class="checkout-notes">
+                        {{settings.checkout_notes}}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="main__footer" role="contentinfo">
+                    {{ content_for_footer }}
+                    <div class="copyright">
+                        Copyright {{ "now" | date: "%Y" }} <span>&copy; {{ shop.name }}</span>
+                    </div>
+                    <div class="continue-shopping-link hide">{{settings.checkout_continue_link}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ tracking_code }}
+
+</body>
+</html>

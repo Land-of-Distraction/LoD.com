@@ -1,0 +1,53 @@
+<div class="collection-nav-block sorting">
+    <div class="nav-title">{{ 'collections.sorting.title' | t }}</div>
+    <div class="nav-content">
+        <div class="nav-list-container">
+          
+            {%- if collection.handle == 'all' -%}
+              {%- assign sortTag = collection.url | append: '/shoppable'-%}
+            {% endif %}
+
+            <a href="{{-sortTag-}}?sort_by=created-descending" class="filter"><span>{{ 'collections.sorting.date_descending' | t }}</span></a>
+            <a href="{{-sortTag-}}?sort_by=price-ascending" class="filter"><span>{{ 'collections.sorting.price_ascending' | t }}</span></a>
+            <a href="{{-sortTag-}}?sort_by=price-descending" class="filter"><span>{{ 'collections.sorting.price_descending' | t }}</span></a>
+            <a class="clear-all clear-all-sort filter hide" href="">Clear Sort</a>
+        </div>
+    </div>
+</div>
+
+
+{% comment %}
+  Toggle between collection.liquid and collection.list.liquid with the
+  ?view= parameter.
+
+<div class="form-horizontal">
+  <label for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+  <select name="SortBy" id="SortBy">
+    <option value="manual">{{ 'collections.sorting.featured' | t }}</option>
+    <option value="best-selling">{{ 'collections.sorting.best_selling' | t }}</option>
+    <option value="title-ascending">{{ 'collections.sorting.az' | t }}</option>
+    <option value="title-descending">{{ 'collections.sorting.za' | t }}</option>
+    <option value="price-descending">{{ 'collections.sorting.price_descending' | t }}</option>
+    <option value="price-ascending">{{ 'collections.sorting.price_ascending' | t }}</option>
+    <option value="created-ascending">{{ 'collections.sorting.date_ascending' | t }}</option>
+  </select>
+</div>
+
+
+<div class="collection-view">
+  <button type="button" title="{{ 'collections.general.grid_view' | t }}" class="change-view{% unless template contains 'list' %} change-view--active{% endunless %}" data-view="grid">
+    <span class="icon-fallback-text">
+      <span class="icon icon-grid-view" aria-hidden="true"></span>
+      <span class="fallback-text">{{ 'collections.general.grid_view' | t }}</span>
+    </span>
+  </button>
+  <button type="button" title="{{ 'collections.general.list_view' | t }}" class="change-view{% if template contains 'list' %} change-view--active{% endif %}" data-view="list">
+    <span class="icon-fallback-text">
+      <span class="icon icon-list-view" aria-hidden="true"></span>
+      <span class="fallback-text">{{ 'collections.general.list_view' | t }}</span>
+    </span>
+  </button>
+</div>
+{% endcomment %}
+
+

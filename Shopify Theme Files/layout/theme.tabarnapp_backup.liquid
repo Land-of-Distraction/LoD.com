@@ -1,0 +1,131 @@
+<!doctype html>
+    <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+    <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="theme-color" content="#000000">
+        <link rel="canonical" href="{{ canonical_url }}">
+
+        {% if settings.favicon != blank %}
+            <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+        {% endif %}
+
+        {% capture seo_title %}
+            {{ page_title }}
+            {% if current_tags %}
+                {%- assign meta_tags = current_tags | join: ' and ' -%}
+
+                {% comment %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endcomment %}
+                in {{ meta_tags | replace: 'Tagged ','' }}
+
+            {% endif %}
+            {% if current_page != 1 %}
+                &ndash; {{ 'general.meta.page' | t: page: current_page }}
+            {% endif %}
+            {% unless page_title contains shop.name %}
+                &ndash; {{  shop.name  }}
+            {% endunless %}
+        {% endcapture %}
+        {% assign seo_title = seo_title | replace: 'in shoppable',''%}
+
+        <title>{{- seo_title -}}</title>
+
+        {% include 'social-meta-tags' %}
+
+        {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+        <script>
+            document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+            
+            window.supported_currencies = {{ settings.supported_currencies | json }};
+            window.theme = {
+                strings: {
+                    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+                    soldOut: {{ 'products.product.sold_out' | t | json }},
+                    unavailable: {{ 'products.product.unavailable' | t | json }}
+                },
+                moneyFormat: {{ shop.money_with_currency_format | remove: '.00' | remove: '$' | json }} 
+            };
+            
+            var ORW = (function (ORW) { return ORW; } (ORW || {}));
+            window.ORW = ORW;
+            ORW.assetsUrl = "{{ 'placeholder' | asset_url }}";
+            ORW.appUrl = ORW.assetsUrl.split('/placeholder')[0];
+            ORW.appUrlHash = ORW.assetsUrl.split('/placeholder')[1];
+            ORW.facebook = {
+                id : '{{ settings.fb_app_id }}',
+                ver : '{{ settings.fb_app_ver }}',
+                storeName : '{{ shop.name }}'
+            }
+        </script>
+
+        {% if template.directory == 'customers' %}
+        <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+        <!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
+        {% endif %}
+
+        <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}"></script><!--<![endif]-->
+        <!--[if lt IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
+        
+        <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'ajax-cart.js' | asset_url }}"></script><!--<![endif]-->
+        <!--[if lt IE 9]><script src="{{ 'ajax-cart.js' | asset_url }}"></script><![endif]-->
+        
+        <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'option_selection.js' | shopify_asset_url }}"></script><!--<![endif]-->
+        <!--[if lt IE 9]><script src="{{ 'option_selection.js' | shopify_asset_url }}"></script><![endif]-->
+        
+        {% if settings.minify_js_enable %}
+            <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ '1r-min.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+            <!--[if lt IE 9]><script src="{{ 'require.js' | asset_url }}"></script><![endif]-->
+        {% else %}
+            <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'app-main.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+            <!--[if lt IE 9]><script src="{{ 'require.js' | asset_url }}"></script><![endif]-->
+        {% endif %}
+
+        <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W58F9FJ');</script>
+<!-- End Google Tag Manager -->
+        {{ content_for_header }}
+      
+    </head>
+
+    {% comment %}
+    <!-- Template header color handler -->
+    {% endcomment %}
+    {% assign template_name = template | replace: '.', ' ' | truncatewords: 1, '' | handle %}
+    {% assign header_color = 'black-header' %}
+    {%- if template_name == 'product' or template_name == 'cart' or template_name == 'page' -%}
+        {% assign header_color = 'white-header' %}
+    {%- endif -%}
+
+    <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template_name }} {% if template.suffix %}template-suffix-{{ template.suffix }}{% endif %} page-{{ page_title | handle }} {{header_color}}" data-tempsuffix="{{ template.suffix }}">
+
+      <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W58F9FJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->  
+      
+      <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+        
+        {% comment %}
+        {% include 'mlveda-currencies' %}
+        {% endcomment %}
+
+        {% include 'header' %}
+
+        <main role="main" id="MainContent">
+            {{ content_for_layout }}
+        </main>
+        
+        {% include 'footer' %}
+
+    </body>
+
+    <div id="responsive-indicator"></div>
+
+</html>

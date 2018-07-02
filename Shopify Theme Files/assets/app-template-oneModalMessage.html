@@ -1,0 +1,12 @@
+<div class="alert-message <%= content.type %>">
+  <strong>
+  	<% if (content.title) { %>
+  		<%= content.title %>
+  	<% } else { %>
+  		<%= content.type %>
+  	<% } %>
+  </strong>
+  <div>
+    <p><%= content.content %></p>
+  </div>
+</div>

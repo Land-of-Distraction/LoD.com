@@ -1,0 +1,182 @@
+{% schema %}
+{
+  "name": "Image Module",
+  "settings": [
+    {
+      "type": "radio",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" }
+      ],
+      "default":  "black",
+      "id": "header_color",
+      "label": "Header Font Color"
+    },
+    {
+        "type": "radio",
+        "options": [
+          { "value": "white", "label": "White" },
+          { "value": "black", "label": "Black" }
+        ],
+        "default":  "black",
+        "id": "text_color",
+        "label": "module Text Color"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Call to Action caption and button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text" ,
+      "label": "Call to action text",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Call to action link"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Video with frame"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_enable",
+      "label": "Enable Video",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL (Youtube, Vimeo, Self hosted)",
+      "info": "For YouTube/Vimeo videos copy the URL from the browser bar"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_image",
+      "label": "Poster image",
+      "info": "Will show as poster image if the video doesn't loads or doesn't autoplays. Recommended size: 1920x1200"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "module_image",
+      "name": "Image",
+      "limit": 2,
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "module_image",
+            "label": "Background image",
+            "info": "Recommended size: 1920x1200"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_mobile",
+          "label": "Hide this image on mobile",
+          "default": false,          
+           "info": "When using split images"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Background image",
+            "info": "Recommended size: 1024x1366"
+        }
+      ]
+    },
+    {
+      "type": "module_caption",
+      "name": "Caption",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "radio",
+          "options": [
+            { "value": "right", "label": "Right" },
+            { "value": "center", "label": "Center" },
+            { "value": "left", "label": "Left" }
+          ],
+          "default":  "center",
+          "id": "text_alignment",
+          "label": "Text Alignment"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        }
+
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Module",
+      "category": "Homepage Modules",
+      "settings": {
+        
+      }
+    }
+  ]
+}
+{% endschema %}
+<section class="module image-module {{section.settings.text_color}}" data-header-color="{{section.settings.header_color}}-header">  
+
+  {% assign module_link = section.settings.cta_link %}    
+
+      {% assign video = section.settings.video_url %}
+      {% if section.settings.video_image %}
+        {% assign poster_image = section.settings.video_image | img_url: 'master' %}
+      {% endif %}
+      {% if section.settings.video_enable %}
+        {%- include 'video-module' -%}
+      {% endif %}
+
+      {% if module_link %}<a href="{{module_link}}" class="section-link">{% endif %}
+      
+      <div class="images-blocks">
+      {% for block in section.blocks limit: section.blocks.size %}        
+        {% if block.type == 'module_image' %}
+
+            {% if block.settings.mobile_image %}
+              <div class="image-block hide-mobile" style="background-image:url('{{ block.settings.module_image | img_url: 'master' }}');"></div>
+              <div class="image-block hide-desktop{% if block.settings.hide_mobile %} hide-mobile{% endif %}" style="background-image:url('{{ block.settings.mobile_image | img_url: 'master' }}');"></div>
+            {% else %}
+              <div class="image-block{% if block.settings.hide_mobile %} hide-mobile{% endif %}" style="background-image:url('{{ block.settings.module_image | img_url: 'master' }}');"></div>
+            {% endif %}
+
+        {% endif %}
+      {% endfor %}
+      </div>
+      
+      <div class="caption-blocks">
+      {% for block in section.blocks limit: section.blocks.size %}
+        {% if block.type == 'module_caption' %}
+            <div class="caption align-{{block.settings.text_alignment}}">{{block.settings.title}}</div>
+        {% endif %}
+      {% endfor %}
+      </div>
+
+
+      {% assign anim_type = 'fade-up' %}
+      {% comment %}
+      {% if block.settings.text_position != 'center' %}
+        {% assign anim_type = 'fade-' | append: block.settings.text_position %}
+      {% endif %}
+      {% endcomment %}
+
+      {% if section.settings.cta_text %}
+        <!-- data-aos="{{anim_type}}" -->
+        <div class="section-cta">{{section.settings.cta_text}}</div>
+      {% endif %}
+
+    {% if module_link %}</a>{% endif %}
+  
+</section>

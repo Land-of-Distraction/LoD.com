@@ -1,0 +1,82 @@
+{% comment %}
+<!--
+Collection Filters
+Dependencies: MetaFields Manager App
+-->
+{% endcomment %}
+{% assign useJs = false %}
+{% assign all_filters = '' %}
+
+{% if settings.collection_color_filters != blank %}
+    {% assign all_filters = all_filters | append: 'Color|' | append: settings.collection_color_filters | append: '||' %}
+{% endif %}
+{% if settings.collection_price_filters != blank %}
+    {% assign all_filters = all_filters | append: 'Price|' | append: settings.collection_price_filters | append: '||' %}
+{% endif %}
+{% if settings.collection_size_filters != blank %}
+    {% assign all_filters = all_filters | append: 'Size|' | append: settings.collection_size_filters | append: '||' %}
+{% endif %}
+
+{% assign all_filters = all_filters | split: '||' %}
+
+<div class="collection-nav-block filters">
+    <div class="nav-title">Refine</div>
+    <div class="nav-content">
+        <div class="nav-list-container">
+        {% for filter in all_filters %}
+
+            {% assign split = filter | split: '|' %}
+            {% assign title = split.first %}
+            {% assign hasActiveFilter = false %}
+            {% assign allowedFilters = split.last | split: ',' %}
+
+            {% for tag in allowedFilters %}
+                {% if collection.all_tags contains tag %}
+                    {% assign filterCount = forloop.index %}
+                {% endif %}
+            {% endfor %}
+
+            {% if title != 'handle' and filterCount > 1 %}
+                {% assign useJs = true %}
+                <div class="filter filter-{{ title | handle }}">
+                    <label class="filter-title">Filter By {{ title | capitalize }}</label>
+
+                    <select class="filter-select coll-filter hide" id="filter-{{title | handle}}">
+                        <option value="">View All</option>
+                        {% for tag in allowedFilters %}
+                            {% if current_tags contains tag %}
+                                <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+                            {% elsif collection.tags contains tag %}
+                                <option value="{{ tag | handle }}">{{ tag }}</option>
+                            {% else %}
+                                <option value="{{ tag | handle }}" disabled>{{ tag }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    
+                    <div class="filter-swatches" data-select="filter-{{title | handle}}">
+                        {% for tag in allowedFilters %}
+                            {% if current_tags contains tag %}
+                                {% assign hasActiveFilter = true %}
+                                <a class="filter-swatch active" href="{{ tag | handle }}"><span>{{ tag }}</span></a>
+                            {% elsif collection.tags contains tag %}
+                                <a class="filter-swatch" href="{{ tag | handle }}"><span>{{ tag }}</span></a>
+                            {% else %}
+                                <a class="filter-swatch disabled" href="{{ tag | handle }}"><span>{{ tag }}</span></a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if hasActiveFilter %}
+                        <a class="filter-swatch view-all" href=""><span>View All</span></a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        
+        {% if current_tags == '' %}
+        <a class="clear-all clear-all-filters" href="">Clear All</a>
+        {% endif %}
+    </div>
+</div>

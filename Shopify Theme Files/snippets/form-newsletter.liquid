@@ -1,0 +1,56 @@
+{% comment %}
+<!-- Send directly to Mailchimp -->
+<div class="newsletter-form"
+    data-errormsg="{{ settings.sub_modal_errormsg }}" 
+    data-successmsg="{{ settings.sub_modal_successmsg }}" 
+    data-requiredmsg="{{ settings.sub_modal_requiredmsg }}" 
+    data-erroremail="{{ settings.sub_modal_erroremail }}" 
+    data-delay="{{ settings.sub_modal_delay }}" 
+    data-days="{{ settings.sub_modal_cookiedays }}" 
+    data-enabled="{{ settings.sub_modal_cookieenable }}"
+>
+{% assign actionLink = settings.sub_modal_action | replace: 'post?', 'post-json?'  | append: '&c=?' %}
+<form action="{{ actionLink }}" method="get" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+    {% if form.posted_successfully  %}
+    <div class="note form-success">
+        {{ 'general.newsletter_form.confirmation' | t }}
+        <button type="button" class="btn reset-news"><div class="icon icon-refresh-cw"></div></button>
+    </div>
+    {% endif %}
+
+    <div class="input-group">
+        <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.placeholder' | t }}" name="EMAIL" id="mce-EMAIL" class="input-group-field required email {% if form.posted_successfully? %}hide{% endif %}" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off" required="required">
+        <span class="error-msg"></span>
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <button type="submit" class="cta" name="subscribe" id="mc-embedded-subscribe" value="{{ 'general.newsletter_form.submit' | t }}">{{ 'general.newsletter_form.submit' | t }}</button>
+    </div>
+</form>
+</div>
+{% endcomment %}
+
+<div class="newsletter-form"
+    data-errormsg="{{ settings.sub_modal_errormsg }}" 
+    data-successmsg="{{ settings.sub_modal_successmsg }}" 
+    data-requiredmsg="{{ settings.sub_modal_requiredmsg }}" 
+    data-erroremail="{{ settings.sub_modal_erroremail }}" 
+    data-delay="{{ settings.sub_modal_delay }}" 
+    data-days="{{ settings.sub_modal_cookiedays }}" 
+    data-enabled="{{ settings.sub_modal_cookieenable }}">
+{% form 'customer' %}
+
+    {% if form.posted_successfully?  %}
+    <div class="note form-success">
+        {{ 'general.newsletter_form.confirmation' | t }}
+        <button type="button" class="cta reset-news">{{ 'general.newsletter_form.submit' | t }}</button>
+    </div>
+    {% endif %}
+
+    <div class="input-group">
+        <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.placeholder' | t }}" name="contact[email]" id="Email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off" required="required">
+        <span class="error-msg">{{ form.errors | default_errors }}</span>
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <button type="submit" class="cta" name="subscribe" id="subscribe" value="{{ 'general.newsletter_form.submit' | t }}">{{ 'general.newsletter_form.submit' | t }}</button>
+    </div>
+{% endform %}
+</div>

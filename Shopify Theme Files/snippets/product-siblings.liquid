@@ -1,0 +1,19 @@
+{% for collection in product.collections %}
+    {% assign words = collection.title | split: '_linked' %}
+    {% assign hasLinkedCollection = words | size %}
+    {% if hasLinkedCollection > 1 %}
+    {% comment %}
+    We found linked collection, so render the linked products below
+    {% endcomment %}
+        <div class="sibling-product-container">
+            <div class="label">More choice</div>
+            {% for sibling in collection.products %}
+            {% if sibling.handle != product.handle %}
+            <a href="{{ sibling.url }}" >
+                <img src="{{ sibling.featured_image | img_url: 'small' }}" />
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}

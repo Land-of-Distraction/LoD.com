@@ -1,0 +1,122 @@
+{% schema %}
+{
+  "name": "About Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Page Contact"
+    },
+    {
+       "type":  "text",
+       "id":    "contact_title",
+       "label": "Contact Title 1"
+    },
+    {
+       "type":  "text",
+       "id":    "contact_email",
+       "label": "Contact Email 1"
+    },
+    {
+       "type":  "text",
+       "id":    "contact_title_2",
+       "label": "Contact Title 2"
+    },
+    {
+       "type":  "text",
+       "id":    "contact_email_2",
+       "label": "Contact Email 2"
+    },
+
+    {
+      "type": "header",
+      "content": "Social menu"
+    },
+    {
+       "type":  "text",
+       "id":    "social_title",
+       "label": "Social Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_social",
+      "label": "Enable Social Menu?",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "social_menu",
+      "label": "Social menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "page_images",
+      "name": "Page Images",
+      "limit": 2,
+      "settings": [
+        {
+           "type":  "text",
+           "id":    "title",
+           "label": "Image Alt text",
+           "info":  "Add a title to identify the header (will not appear on the page)"
+        },
+        {
+          "type": "image_picker",
+          "id": "page_image",
+          "label": "Page image",
+          "info": "Recommended size: "
+        }
+      ]      
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Page",
+      "category": "About Page",
+      "settings": {
+        
+      }
+    }
+  ]
+}
+{% endschema %}
+
+<div class="about-utility">
+
+  <div class="page-contacts">
+    {% if section.settings.contact_email %}
+    <div class="page-contact">
+      <div class="contact-title">{{- section.settings.contact_title -}}</div>
+      <a href="mailto:{{- section.settings.contact_email -}}" class="contact-email">{{- section.settings.contact_email -}}</a>
+    </div>
+    {% endif %}
+
+    {% if section.settings.contact_email_2 %}
+    <div class="page-contact">
+      <div class="contact-title">{{- section.settings.contact_title_2 -}}</div>
+      <a href="mailto:{{- section.settings.contact_email_2 -}}" class="contact-email">{{- section.settings.contact_email_2 -}}</a>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.enable_social %}
+    <div class="page-socials">
+      <div class="social-title">{{- section.settings.social_title -}}</div>
+      {%- assign social_menu = section.settings.social_menu -%}
+      {% if linklists[social_menu].links.size > 0 %}
+      <div class="social-list">
+          {% for link in linklists[social_menu].links %}
+              <a href="{{ link.url }}" target="_blank" title="Visit {{shop.name}} in {{ link.title }}">{{ link.title }}</a>
+          {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% for block in section.blocks limit:section.blocks.size %}
+  <div class="page-image image-{{forloop.index}}" data-aos="fade-up">
+    <img src="{{ block.settings.page_image | img_url: 'master' }}" alt="{{block.settings.title}}">
+  </div>
+{% endfor %}

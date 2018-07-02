@@ -1,0 +1,112 @@
+{% comment %}
+<!-- Login / Sign In page -->
+<!-- /templates/login.liquid -->
+{% endcomment %}
+<div class="login-page">
+  <div class="inner-content">
+
+    <div class="form-success hide" id="ResetSuccess">
+        {{ 'customer.recover_password.success' | t }}
+    </div>
+
+    <div id="CustomerLoginForm" class="form-lod">
+        {% form 'customer_login' %}
+        <h1>{{ 'customer.login.sign_in' | t }}</h1>
+
+        {% if form.errors %}
+            {% for field in form.errors %}
+                {% if form.errors.messages[field] contains "Invalid login credentials." %}
+                  <div class="errors"><p>Invalid username or password. Please try again.</p></div>
+                {% else %}
+                    {{ form.errors | default_errors }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+      <div class="form-fields">
+        <label for="CustomerEmail" class="label-hidden">{{ 'customer.login.email' | t }}</label>
+        <input type="email"
+               name="customer[email]"
+               id="CustomerEmail"
+               class="input-field {% if form.errors contains 'email' %}input-error{% endif %}"
+               placeholder="{{ 'customer.login.email' | t }}"
+               spellcheck="false"
+               autocapitalize="off"
+               autofocus
+               >
+
+          {% if form.password_needed %}
+            <label for="CustomerPassword" class="label-hidden">
+                {{ 'customer.login.password' | t }}
+            </label>
+            <input type="password"
+                   name="customer[password]"
+                   id="CustomerPassword"
+                   class="input-field {% if form.errors contains 'password' %}input-error{% endif %}"
+                   placeholder="{{ 'customer.login.password' | t }}"
+                   autocomplete="off"
+                   >
+          {% endif %}
+          {% if form.password_needed %}
+              <div class="forgot-pass">
+                <a href="#recover" class="form-actions" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+              </div>
+          {% endif %}
+      </div>
+
+      <div class="account-actions">
+          {% if shop.checkout.guest_login %}
+              {% form 'guest_login' %}
+            <input type="submit" class="cta-white" value="{{ 'customer.login.guest_title' | t }}">
+              {% endform %}
+          {% endif %}
+
+        <input type="submit" class="cta-white" value="{{ 'customer.login.sign_in' | t }}">
+
+      </div><!-- .account-actions -->
+
+      <div class="alt-actions">
+
+        <span>{{ 'customer.login.no_account' | t }} {{ 'layout.customer.create_account' | t | customer_register_link }}.</span>
+
+      </div>
+
+        {% endform %}
+
+    </div><!-- #CustomerLoginForm -->
+    <div id="RecoverPasswordForm" class="hide form-lod">
+      <h2>{{ 'customer.recover_password.title' | t }}</h2>
+      <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+        {% form 'recover_customer_password' %}
+
+        {{ form.errors | default_errors }}
+
+        {% if form.posted_successfully? %}
+          <span class="hide reset-password-success"></span>
+        {% endif %}
+
+      <div class="form-fields">
+        <label for="RecoverEmail" class="label-hidden">
+            {{ 'customer.recover_password.email' | t }}
+        </label>
+        <input type="email"
+               name="email"
+               id="RecoverEmail"
+               class="input-field"
+               placeholder="{{ 'customer.recover_password.email' | t }}"
+               spellcheck="false"
+               autocomplete="off"
+               autocapitalize="off"
+               required>
+      </div>
+      <div class="account-actions">
+        <input type="submit" class="cta-white" value="{{ 'customer.recover_password.submit' | t }}">
+        <input type="button" class="cta-gray" id="HideRecoverPasswordLink" value="{{ 'customer.recover_password.cancel' | t }}" >
+      </div>
+
+        {% endform %}
+    </div><!-- #RecoverPasswordForm -->
+
+  </div><!-- .inner-content -->
+</div><!-- .login-page -->

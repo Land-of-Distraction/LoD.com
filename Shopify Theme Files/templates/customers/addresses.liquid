@@ -1,0 +1,77 @@
+{% comment %}
+<!-- Address Manager page -->
+<!-- /templates/addresses.liquid -->
+{% endcomment %}
+<div class="account-page account-addresses">
+  <div class="inner-content">
+
+    <h1 class="hide">{{ 'customer.account.title' | t }}</h1>
+
+    <div class="tab-container">
+      <div class="tab-titles">
+        <a href="#" class="active" data-tab="tab-details"><span>{{ 'customer.account.view_addresses' | t }}</span></a>
+        <a href="/account" class="" data-tab="tab-orders"><span>{{ 'customer.orders.title' | t }}</span></a>
+        {{ 'layout.customer.log_out' | t | customer_logout_link }}
+      </div>
+
+      <div class="tabs-content">
+
+        <div id="tab-details" class="tab active">
+            {% paginate customer.addresses by 5 %}
+          <div class="addresses-list">
+              {% for address in customer.addresses %}
+
+                <div class="address-box">
+                  <h3 class="customer-title">
+                      {% if address == customer.default_address %}
+                          {{ 'customer.addresses.default' | t }}
+                      {% endif %}
+                  </h3>
+                  <p>
+                      {{ address.first_name | capitalize }}
+                      {{ address.last_name | capitalize }}<br>
+                      {% if address.company != nil %}
+                          {{ address.company }}<br>
+                      {% endif %}
+                      {{ address.street }}<br>
+                      {{ address.city | capitalize }},
+                      {% if address.province_code %}
+                          {{ address.province_code | upcase }},
+                      {% endif %}
+                      {{ address.zip | upcase }}<br>
+                      {{ address.country }}<br>
+                      {% if address.phone %}
+                          {{ address.phone }}
+                      {% endif %}
+                  </p>
+                  <div class="account-actions">
+                    <button type="button" class="address-edit-toggle address-cta" data-form-id="{{ address.id }}">
+                        {{ 'customer.addresses.edit' | t }}
+                    </button>
+                    <button type="button" class="address-delete address-cta" data-form-id="{{ address.id }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                        {{ 'customer.addresses.delete' | t }}
+                    </button>
+                  </div>
+                    {% include 'addresses-edit' %}
+                </div>
+              {% endfor %}
+          </div>
+
+            {% if paginate.pages > 1 %}
+                {% include 'pagination' %}
+            {% endif %}
+
+            {% endpaginate %}
+
+          <div class="account-actions">
+            <button class="cta-white address-new-toggle" >{{ 'customer.addresses.form' | t }}</button>
+          </div>
+
+            {% include 'addresses-new' %}
+
+        </div><!-- .tab -->
+
+      </div><!-- .tabs-content -->
+    </div><!-- .tab-container -->
+  </div><!-- .inner-content -->
+</div><!-- .login-page -->

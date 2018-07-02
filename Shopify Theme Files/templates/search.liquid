@@ -1,0 +1,65 @@
+{% comment %}
+<!-- Author windsor@1r - Search page -->
+<!-- /templates/search.liquid -->
+{% endcomment %}
+<div class="search-header {% if search.results_count == 0 %}no-results{% endif %}">
+  <div class="search-header-wrapper">
+  
+  {% assign only_prods_count = false %}
+
+  {% for product in search.results %}
+    {% if product.object_type == 'product' %}
+      {% assign only_prods_count = true %}
+    {% endif %}
+    {% break %}
+  {% endfor %}
+
+  {% if search.performed %}
+
+    {% if search.results_count == 0 or only_prods_count == false %}
+      <h1 class="search-title">{{ 'general.search.no_results_html' | t }}</h1>
+    {% elsif search.results_count == 1 %}
+      <h1 class="search-title">{{ 'general.search.result_for_html' | t: terms: search.terms  }}</h1>
+    {% elsif only_prods_count %}
+      <h1 class="search-title">{{ 'general.search.results_for_html' | t: terms: search.terms, count: search.results_count  }}</h1>
+    {% endif %}
+  {% else %}
+    <!-- <h1 class="search-title">{{ 'general.search.title' | t }}</h1> -->
+  {% endif %}
+
+  {% include 'form-search' %}
+
+  {% if search.results_count == 0 and search.performed %}
+    <div class="search-help">{{ 'general.search.results_help_text_html' | t: terms: search.terms }}</div>
+  {% endif %}
+
+  </div>
+</div><!-- .search-header -->
+
+{% if search.performed %}
+<div class="product-collection">
+
+  {% if search.results_count > 0 and only_prods_count %}
+    {% paginate search.results by 32 %}
+
+    <div class="collection-products items">
+    {% for product in search.results %}
+        {% assign all_tags = product.tags | downcase %}
+        {% if all_tags contains 'in grid promo' %}
+        {% elsif product.object_type == 'product' %}
+            {% include 'search-grid-item' %}
+        {% endif %}
+    {% endfor %}
+    </div><!-- .collection-products -->
+
+    {% if paginate.pages > 1 %}
+      {% include 'pagination' %}
+    {% endif %}
+
+    {% endpaginate %}
+  {% else %}
+    {% include 'search-empty-related' %}
+  {% endif %}
+{% comment %}<!-- End of search.performed if -->{% endcomment %}
+</div>
+{% endif %}

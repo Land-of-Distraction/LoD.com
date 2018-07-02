@@ -1,0 +1,189 @@
+{% schema %}
+{
+  "name": "Product Size Chart(s)",
+  "settings": [
+    {
+       "type":  "text",
+       "id":    "need_help_text",
+       "label": "Help Link Caption",
+       "default": "Need Help?"
+    },
+    {
+       "type":  "url",
+       "id":    "need_help_link",
+       "label": "Help Link URL",
+       "info": "Leave blank to hide link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "size_measurements",
+      "name": "Size Measurements",
+      "limit": 1,
+      "settings": [
+        {
+          "type":  "text",
+          "id":    "title",
+          "label": "Chart Title",
+          "info":  "This is only an identifier and will not appear on the page"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_headers",
+          "label": "Enable Headers?",
+          "default": false,
+          "info": "Will treat first row as headers"
+        },
+        {
+          "type": "textarea",
+          "id": "inches_content",
+          "label": "Inches sizes",
+          "info": "Use the following structure to create columns: ['Chest', '30.8', '31.9', '33.1', '34.3', '35.8', '39'] Copy previous snippet for as many rows the chart will have"
+        },
+        {
+          "type": "textarea",
+          "id": "centimeters_content",
+          "label": "Centimeters sizes",
+          "info": "Use the following structure to create columns: ['Chest', '30.8', '31.9', '33.1', '34.3', '35.8', '39'] Copy previous snippet for as many rows the chart will have"
+        }
+      ]
+    },
+    {
+      "type": "size_conversions",
+      "name": "Size Conversions",
+      "limit": 1,
+      "settings": [
+        {
+           "type":  "text",
+           "id":    "title",
+           "label": "Chart Title",
+           "info":  "This is only an identifier and will not appear on the page"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_headers",
+          "label": "Enable Headers?",
+          "default": false,
+          "info": "Will treat first row as headers"
+        },
+        {
+          "type": "textarea",
+          "id": "chart_content",
+          "label": "Centimeters sizes",
+          "info": "Use the following structure to create columns: ['Chest', '30.8', '31.9', '33.1', '34.3', '35.8', '39'] Copy previous snippet for as many rows the chart will have"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Size Chart(s)",
+      "category": "Product Size Chart(s)",
+      "settings": {
+        
+      }
+    }
+  ]
+}
+{% endschema %}
+
+<div class="size-chart pdp-utility" id="size-chart" role="dialog">
+  <div class="description-wrapper">
+    
+    {% if section.settings.need_help_link != blank %}
+    <a href="{{- section.settings.need_help_link -}}" class="help-link">{{- section.settings.need_help_text -}}</a>
+    {% endif %}
+
+    {% comment %}
+    <!-- Find if there's a least one chart for Measurement and/or Conversion  -->
+    {% endcomment %}
+
+    {% assign chart_size = section.blocks.size %}
+    {% assign atLeastOneMeasurement = false %}
+    {% assign atLeastOneConversion = false %}
+    {% for charts in section.blocks %}
+      {% if charts.type == 'size_measurements' %}
+        {% assign atLeastOneMeasurement = true %}
+      {% endif %}
+      {% if charts.type == 'size_conversions' %}
+        {% assign atLeastOneConversion = true %}
+      {% endif %}
+    {% endfor %}
+    
+    <div class="tab-container size-chart-tabs">
+        {% if chart_size > 1 %}
+        <div class="tab-titles">
+          <a class="active" data-tab="measurement">Size Measurements</a>
+          <a data-tab="conversion">Size Conversion</a>
+        </div>
+
+        <div class="tabs-content">
+          <div class="active measurement" data-tab="measurement">
+
+            {% for chart in section.blocks %}
+              {% if chart.type == 'size_measurements' %}
+
+                {% if chart.settings.inches_content != blank and chart.settings.centimeters_content != blank %}
+                  <div class="measures-toggle">
+                    Display measurements in <a class="active" data-show="inches">inches</a> or <a data-show="centimeters">centimeters</a>.
+                  </div>
+                {% endif %}
+
+                <div class="chart-wrap">
+                {% if chart.settings.inches_content != blank %}
+                <div class="chart active inches{% if chart.settings.enable_headers %} with-headers{% endif %}">
+                  <table>
+                    <tbody>
+                    {% assign chart_content = chart.settings.inches_content
+                                 | replace: '[', '<tr class="chart-row"><td>'
+                                 | replace: ',', '</td><td>'
+                                 | replace: ']', '</td></tr>' %}
+                    {{ chart_content }}
+                    </tbody>
+                  </table>
+                </div>
+                {% endif %}
+
+                {% if chart.settings.centimeters_content != blank %}
+                <div class="chart centimeters{% if chart.settings.enable_headers %} with-headers{% endif %}">
+                <table>
+                  <tbody>
+                  {% assign chart_content = chart.settings.centimeters_content
+                               | replace: '[', '<tr class="chart-row"><td>'
+                               | replace: ',', '</td><td>'
+                               | replace: ']', '</td></tr>' %}
+                  {{ chart_content }}
+                  </tbody>
+                </table>
+                </div>
+                {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <div data-tab="conversion">
+            {% for chart in section.blocks %}
+              {% if chart.type == 'size_conversions' %}
+
+                {% if chart.settings.chart_content != blank %}
+                <table class="chart active{% if chart.settings.enable_headers %} with-headers{% endif %}">
+                  <tbody>
+                  {% assign chart_content = chart.settings.chart_content
+                               | replace: '[', '<tr class="chart-row"><td>'
+                               | replace: ',', '</td><td>'
+                               | replace: ']', '</td></tr>' %}
+                  {{ chart_content }}
+                  </tbody>
+                </table>
+                {% endif %}
+
+              {% endif %}
+            {% endfor %}
+          </div><!-- .conversion -->
+        </div><!-- .tabs-content -->
+        {% endif %}<!-- /chart_size -->
+
+      </div><!-- .tab-container -->
+  </div>
+</div><!-- .modal.size-chart -->

@@ -1,0 +1,72 @@
+{% comment %}
+Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+    {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available %}
+    {% assign sold_out = false %}
+{% endif %}
+
+{% assign isGiftCard = false %}
+{% if product.type == 'Gift Card' %}
+    {% assign isGiftCard = true %}
+{% endif %}
+
+<article class="item" data-handle="{{ product.handle }}" data-id="{{ product.id }}" data-page="{{ current_page }}" >
+    
+    <!-- Compare price: {{product.compare_at_price}} -->
+
+    {% comment %}
+    <!-- Process alt view -->
+    {% endcomment %}
+    {% assign alt_view = "" %}
+    {% assign alt_text = "" %}
+
+    {% for image in product.images offset:1 %}
+        {% if image.alt contains ' - Detailed' and alt_view == '' %}
+            {% assign alt_view = image %}
+            {% assign alt_text = product.featured_image.alt %}
+        {% endif %}
+    {% endfor %}
+
+    {% if product.images[1] and alt_view == ''  %}
+        {% assign alt_view = product.images[1] %}
+        {% assign alt_text = product.images[1].alt %}
+    {% endif %}
+    
+    <div class="product-image-wrapper{% if alt_view == '' or isGiftCard %} single-image{% endif %}">
+        <a href="{{ product.url | within: collection }}">
+            <img class="product-image" src="{{ product.featured_image.src | img_url: '800x' }}" alt-image="{{ product.featured_image.src | img_url: '800x' }}" alt="{{ product.featured_image.alt | escape }}">
+
+            {% if alt_view != ''  %}
+                <img class="hidden" src="{{ alt_view | product_img_url: '800x' }}" alt="{{ alt_text | escape }}" />
+            {% endif %}
+        </a>
+        {% if sold_out %}
+        <div class="sold-out">{{ 'products.product.sold_out' | t }}</div>
+        {% endif %}
+    </div>
+    <div class="product-info-wrapper">
+        <a href="{{ product.url | within: collection }}">
+            <div class="product-name">{{ product.title }}</div>
+            <div class="price-box">
+
+                {% if on_sale %}
+                <span class="product-compare-price">
+                    {{- product.compare_at_price | money_with_currency  | remove: '.00' | replace: '$','' -}}
+                </span>
+                {% endif %}
+                <span class="product-price" itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                    {{- product.price | money_with_currency | remove: '.00' | replace: '$','' -}}
+                </span>
+            </div>
+        </a>
+    </div>
+</article>
