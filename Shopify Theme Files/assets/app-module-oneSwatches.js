@@ -107,7 +107,7 @@ define([
 				return false;
 			}
 
-			if ( $form.attr('id').split('-').length > 1 ) {
+			if ($form.attr('id').split('-').length > 1) {
 				// PLP
 				var selectorArray = $form.attr('id').split('-'),
 					pid = selectorArray[1],
@@ -117,10 +117,12 @@ define([
 				var $dropdown = $('#productSelect-option-' + selectIndex);
 			}
 
-			$dropdown.val(val);
-			$dropdown.change();
+			$dropdown
+				.val(val)
+				.data('value', val)
+				.change();
 
-			if ($form.attr('id').split('-').length > 1) {//PLP
+			if ($form.attr('id').split('-').length > 1) { //PLP
 				console.log('add to cart click');
 				$form.find('.add-to-cart-btn').trigger('click');
 			}
@@ -141,7 +143,7 @@ define([
 			var self = this,
 				$curr = $(e.currentTarget),
 				$form = $curr.closest('form'),
-				selectedValue = $curr.val(),
+				selectedValue = !$curr.val() && $curr.data('value') ? $curr.data('value') : $curr.val(),
 				optionIndexArray = $curr.data('option').split('option'),
 				optionIndex = optionIndexArray[1] - 1; // Please make sure all dropdown has a valid data-option attribute
 				// console.log(optionIndexArray[1]);

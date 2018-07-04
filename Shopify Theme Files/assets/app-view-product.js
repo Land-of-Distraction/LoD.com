@@ -140,6 +140,7 @@ define([
                 onVariantSelected: ShopifyAPI.selectCallback,
                 enableHistoryState: true
             });
+
             OneSwatches.init({ el: self.$content, preSelect: true, product: self.productJSON });
 
             //preselect color variant
@@ -276,7 +277,8 @@ define([
 
             var events = {
                 'change .single-option-selector' : function(e) {
-                    var val = $(e.currentTarget).val().toLowerCase();
+                    var $target = $(e.currentTarget),
+                        val = !$target.val() && $target.data('value') ? $target.data('value') : $target.val();
 
                     // Update slider
                     filterSlider(val);
