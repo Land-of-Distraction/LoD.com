@@ -278,8 +278,7 @@ define([
             var events = {
                 'change .single-option-selector' : function(e) {
                     var $target = $(e.currentTarget),
-                        val = !$target.val() && $target.data('value') ? $target.data('value') : $target.val(),
-                        val = val.toLowerCase();
+                        val = String(!$target.val() && $target.data('value') ? $target.data('value') : $target.val()).toLowerCase();
 
                     // Update slider
                     filterSlider(val);
