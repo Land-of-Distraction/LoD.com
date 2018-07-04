@@ -76,8 +76,8 @@ define([
 		},
 
 		events: {
-			'click .oneswatch' : 'swatchDropdown',
-			'click .swatches .swatch:not(".disabled")' : 'swatchHandle',
+			'click .oneswatch'               : 'swatchDropdown',
+			'click .swatches .swatch'        : 'swatchHandle',
 			'change .single-option-selector' : 'dropdownHandle'
 		},
 
@@ -111,10 +111,10 @@ define([
 				// PLP
 				var selectorArray = $form.attr('id').split('-'),
 					pid = selectorArray[1],
-					$dropdown = $('#productSelect-' + pid +'-option-'+selectIndex);
+					$dropdown = $('#productSelect-' + pid + '-option-' + selectIndex);
 			} else {
 				// PDP
-				var $dropdown = $('#productSelect-option-'+selectIndex);
+				var $dropdown = $('#productSelect-option-' + selectIndex);
 			}
 
 			$dropdown.val(val);
@@ -303,7 +303,7 @@ define([
 
 			var optionsfilter = function(options, optionsArray, value, resultsArray) {
 				if (options && options.length) {
-					_.each(options,function(option) {
+					_.each(options, function(option) {
 						if ($.inArray(option, resultsArray) == -1) {
 							resultsArray.push(option);
 
@@ -311,7 +311,7 @@ define([
 
 							var newOptions = optionsArray[key];
 
-							optionsfilter(newOptions,optionsArray,value,resultsArray);
+							optionsfilter(newOptions, optionsArray, value, resultsArray);
 						}
 					});
 				} else {
@@ -334,7 +334,7 @@ define([
 				// $selector.val('');
 				$options.attr('disabled','disabled');
 
-				$options = $options.filter(function(index,elem) {
+				$options = $options.filter(function(index, elem) {
 					return $.inArray($(elem).attr('value'), optionArray) != -1;
 				});
 
