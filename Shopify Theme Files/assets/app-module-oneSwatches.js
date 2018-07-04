@@ -76,9 +76,9 @@ define([
 		},
 
 		events: {
-			'click .oneswatch'               : 'swatchDropdown',
-			'click .swatches .swatch'        : 'swatchHandle',
-			'change .single-option-selector' : 'dropdownHandle'
+			'click .oneswatch'                         : 'swatchDropdown',
+			'click .swatches .swatch:not(".disabled")' : 'swatchHandle',
+			'change .single-option-selector'           : 'dropdownHandle'
 		},
 
 		swatchDropdown: function(e) {
