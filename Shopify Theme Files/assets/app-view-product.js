@@ -41,27 +41,27 @@ define([
             self.$utilityToggle = self.$content.find('.content-toggle');
             self.$utilityBox = self.$content.find('.pdp-utility');
             self.utilityBodyClass = 'utility-open';
-            
+
             self.isGiftCard = self.$content.hasClass('gift-card');
             self.productJSON = $(selectors.productJson).length ? JSON.parse($(selectors.productJson).html()) : false;
-            
+
 
           setTimeout(function () {
-          	$('ul.cross-sell li .money a').each(function (index, element) { 
-              element.innerHTML = parseInt(element.innerHTML.replace(/[^0-9\.-]+/g,"")) + " USD" 
+          	$('ul.cross-sell li .money a').each(function (index, element) {
+              element.innerHTML = parseInt(element.innerHTML.replace(/[^0-9\.-]+/g,"")) + " USD"
             });
           }, 1000);
-          
+
           	setTimeout(function () {
                 self.swatches();
                 self.productMedia();
                 self.productInfoFix();
                 self.zoom();
                 self.social();
-                self.pdpUtilities();    
+                self.pdpUtilities();
             }, 400);
-          
-            
+
+
             if (!self.isGiftCard) {
                 self.tabs();
                 self.measuresToggle();
@@ -83,7 +83,7 @@ define([
                 self.closePDPUtilities();
             });
 
-            
+
         },
 
         events: {
@@ -96,7 +96,7 @@ define([
                 $('body').removeClass('related-open');
             }
         },
-        
+
         social: function(){
             var self = this;
             var brand = 'Land of Distraction';
@@ -106,7 +106,7 @@ define([
                     self.$socialIcons.toggleClass('active');
                 },
             };
-            
+
             // Update and delegate adding events
             _.extend(self.events, events);
             self.delegateEvents();
@@ -134,7 +134,7 @@ define([
             var self = this;
             // Init Shopify option selector
             // Option init and Swatch init needed to be separated
-          
+
             new Shopify.OptionSelectors('productSelect', {
                 product: self.productJSON,
                 onVariantSelected: ShopifyAPI.selectCallback,
@@ -145,7 +145,7 @@ define([
             //preselect color variant
             // self.$productInfo.find('.single-option-selector').first().trigger('change');
         },
-        
+
         productInfoFix: function(){
             var self = this;
             var marginOffset = 0;
@@ -174,16 +174,16 @@ define([
                     zIndex: 1,
                 });
             }
-            
+
         },
-        
+
         productMedia: function(){
             var self = this;
             var buildNav = function($images){
                 if ($images.length) {
                     // rebuild
                     var $nav = self.$media.find('.image-nav');
-                    
+
                     // var html = '';
                     // if (!$nav.length) {
                     //     $nav = $('<div class="image-nav"></div>');
@@ -208,12 +208,12 @@ define([
                     //     html += '<div class="item" data-index="' + $image.data('index') + '">0' + num + '</div>';
                     // });
                     // $nav.html(html);
-                    
+
                     // Scroll to top after select since Image got updated
                     $('html, body').animate({
                         scrollTop: 0
                     }, 0);
-                    
+
                     $images.waypoint({
                         handler: function (direction) {
                             if (direction === 'down') {
@@ -227,7 +227,7 @@ define([
                         },
                         offset: 0
                     });
-                    
+
                     $images.waypoint({
                         handler: function (direction) {
                             if (direction === 'up') {
@@ -241,7 +241,7 @@ define([
                         },
                         offset: -20
                     });
-                    
+
                 } else {
                     // build
                     // self.$media.append('<div class="image-nav"></div>');
@@ -275,33 +275,35 @@ define([
             });
 
             var events = {
-                'change .single-option-selector' : function(e){
+                'change .single-option-selector' : function(e) {
+                    var val = $(e.currentTarget).val().toLowerCase();
+
                     // Update slider
-                    filterSlider($(e.currentTarget).val().toLowerCase());
-                    updateNavi($(e.currentTarget).val().toLowerCase());                    
+                    filterSlider(val);
+                    updateNavi(val);
                 },
-                'click .image-nav .item' : function(e){
+                'click .image-nav .item' : function(e) {
                     // var $curr = $(e.currentTarget);
                     // $('html, body').animate({
                     //     scrollTop: self.$thumbImage.find('li[data-index="' + $curr.data('index') + '"]').offset().top
                     // }, 1000);
                 }
             };
-            
+
             // Desktop Image Slider
             // $('body').panelSnap({
             //     panelSelector: '#ProductThumbs > li.active',
             //     directionThreshold: 10,
             // });
-            
+
             // Update Desktop Image Scroll Navigation
             // if (!self.isGiftCard) {
             //     buildNav(self.$thumbImage.find('li.active'));
             // }
-            
+
             // Update Mobile Image slider when loaded
             filterSlider(self.$mediaSlider.data('selected'));
-            
+
             // Update and delegate adding events
             _.extend(self.events, events);
             self.delegateEvents();
@@ -329,7 +331,7 @@ define([
             // }
 
         },
-        
+
         zoom: function(){
             var self = this;
             OneZoom.init({
@@ -402,7 +404,7 @@ define([
                 var $tabContainer = $curr.parents('.tab-container');
                 var tabVal = $curr.attr('data-tab');
                 var $activeTab  = $tabContainer.find('.tabs-content [data-tab="' + tabVal + '"]');
-                
+
                 tabSwitch($curr, 'active');
                 tabSwitch($activeTab, 'active');
             };
@@ -438,13 +440,13 @@ define([
             self.delegateEvents();
 
         },
-        
+
         responsive: function (flag) {
 			// For window resize on Desktop
 			var self = this,
 			id = '',
             marginOffset = 0;
-            
+
 			function responsive(){
 			    var $fixItems = self.$currentFixItems || false;
                 if ($fixItems && $fixItems.css('position') == 'absolute') {
@@ -456,7 +458,7 @@ define([
                     }
                 }
 			};
-			
+
 			responsive();
             $(window).resize(function() {
                 clearTimeout(id);
@@ -465,9 +467,9 @@ define([
                     responsive();
                 }, 400);
             });
-			
+
 		},
-        
+
         isMobile: function () {
             var self = this;
             var w = $(window).width();
