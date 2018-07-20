@@ -12,20 +12,20 @@
         <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
     {% endif %}
 
-    <title>{{ shop.name }} &ndash; {{ page_title }}</title>
+    <title>{{ page_title }}</title>
 
     {{ content_for_header }}
     {{ checkout_stylesheets }}
     <!-- custom css stylesheets -->
     {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
     {{ 'checkout.scss.css' | asset_url | stylesheet_tag }}
-    
+
     {{ checkout_scripts }}
 
     {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
 
     {{ 'app-view-checkout.js' | asset_url | script_tag }}
-    
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -36,6 +36,7 @@
 
 </head>
 <body class="template-checkout">
+    {{ skip_to_content_link }}
 
     <header class="site-header" data-header>
       <div class="header-content">
@@ -51,33 +52,38 @@
 
     <div class="content" data-content>
         {{ order_summary_toggle }}
+
         <div class="wrap">
-            <div class="sidebar">
-                <div class="sidebar__content">
-                    {{ content_for_order_summary }}
-                </div>
-            </div>
             <div class="main" role="main">
                 <div class="main__header">
                     <!-- <a href="{{ wordpress_baseurl }}/">{{ content_for_logo }}</a> -->
                     {{ breadcrumb }}
                     {{ alternative_payment_methods }}
                 </div>
+
                 <div class="main__content">
                     {{ content_for_layout }}
-                    
+
                     {% if settings.checkout_notes %}
                     <div class="checkout-notes">
                         {{settings.checkout_notes}}
                     </div>
                     {% endif %}
                 </div>
+
                 <div class="main__footer" role="contentinfo">
                     {{ content_for_footer }}
                     <div class="copyright">
                         Copyright {{ "now" | date: "%Y" }} <span>&copy; {{ shop.name }}</span>
                     </div>
+
                     <div class="continue-shopping-link hide">{{settings.checkout_continue_link}}</div>
+                </div>
+            </div>
+
+            <div class="sidebar" role="complementary">
+                <div class="sidebar__content">
+                    {{ content_for_order_summary }}
                 </div>
             </div>
         </div>

@@ -15,23 +15,23 @@ $bodyColorOpacity: rgba(0,0,0,0.8);
 
 /* Exclusive overwrites for Shopify Checkout */
 .boxshadow .main .field__input,
-.boxshadow .sidebar .field__input{
+.boxshadow .sidebar .field__input {
 	box-shadow: none;
 }
 
 .boxshadow .btn:focus,
 .boxshadow .btn:active,
 .boxshadow .btn-secondary:focus,
-.boxshadow .btn-secondary:active
-{
+.boxshadow .btn-secondary:active {
 	box-shadow: none;
 }
 
 .js .main .btn--disabled,
-.js .sidebar .btn--disabled{
+.js .sidebar .btn--disabled {
 	background: transparent;
 	color: $lightGrey2;
     border-color: $lightGrey2;
+
     &:hover{
         background: transparent;
         color: $lightGrey2;
@@ -39,11 +39,23 @@ $bodyColorOpacity: rgba(0,0,0,0.8);
     }
 }
 
-.floating-labels .field--show-floating-label .field__input{
+.floating-labels .field--show-floating-label .field__input {
 	padding: 20px 10px 0;
 }
 
-.content-box{
+.content-box {
 	box-shadow: none;
     border-radius: 0;
+}
+
+// @Brad Mallow - 7/19/18 - overwrite new checkout upgrade styles
+.order-summary__section ~ .order-summary__section {
+    border-top: none;
+}
+
+.order-summary__section--product-list {
+    &:after {
+        content: none;
+        display: none;
+    }
 }
