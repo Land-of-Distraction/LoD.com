@@ -1,0 +1,44 @@
+{% comment %}
+  @Brad - this snippet generates responsive images using the picture and source elements.
+
+  input params:
+    img_src : source image file
+    alt     : alternative image text
+    sizes   : comma separated list of colon separated values, in order from smallest to largest screen, showing the size of a collection product image at a given device screen size - ex. "375:158,1024:482" - where 375 & 1024 represent screen sizes and 158 & 482 represent the size of the product image at that screen size
+    hidden  : is this img initially hidden, such as certain product images on collection pages
+{% endcomment %}
+
+{% comment %}
+  if no sizes are declared, use the complete list of sizes corresponding to the following devices:
+    - 320  : iphone 5/SE
+    - 375  : iphone 6/7/8/X
+    - 414  : iphone 6/7/8 Plus
+    - 768  : ipad
+    - 1024 : ipad landscape/ipad pro
+    - 1366 : ipad pro landscape
+    - 1600 : XL device
+{% endcomment %}
+{% if sizes == blank %}
+  {% assign sizes = '320:130,375:158,414:177,768:354,1024:482,1366:375,1600:453' %}
+{% endif %}
+
+{% assign screens = sizes | remove: ' ' | split: ',' %}
+
+<picture
+  {% if hidden == true %}class="hidden"{% endif %}
+>
+  {% for screen in screens %}
+    {% assign key_val = screen | split: ':' %}
+
+    {% capture width %}{{ key_val.last }}x{% endcapture %}
+    {% capture width_2x %}{{ key_val.last | times: 2 }}x{% endcapture %}
+
+    <source media="(max-width: {{ key_val.first }}px)" srcset="{{ img_src | img_url: width }}, {{ img_src | img_url: width_2x }} 2x">
+  {% endfor %}
+
+  <img
+    class="product-image"
+    src="{{ img_src | img_url }}"
+    alt="{{ alt | escape }}"
+  >
+</picture>

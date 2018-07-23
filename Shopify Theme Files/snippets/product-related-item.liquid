@@ -9,10 +9,9 @@
 {% endif %}
 
 <article class="item" data-handle="{{ product.handle }}" data-id="{{ product.id }}">
-
     <a href="{{ product.url | within: collection }}">
         <div class="product-image-wrapper single-image">
-            <img src="{{ product.featured_image.src | img_url: '400x' }}" alt="{{ product.featured_image.alt | escape }}">            
+            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt %}
         </div>
         <div class="product-info-wrapper">
             <div class="product-name">{{ product.title }}</div>

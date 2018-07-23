@@ -20,7 +20,7 @@ Check if the product is sold out and set a variable to be used below.
 {% endif %}
 
 <article class="item" data-handle="{{ product.handle }}" data-id="{{ product.id }}" data-page="{{ current_page }}" >
-    
+
     <!-- Compare price: {{product.compare_at_price}} -->
 
     {% comment %}
@@ -40,29 +40,32 @@ Check if the product is sold out and set a variable to be used below.
         {% assign alt_view = product.images[1] %}
         {% assign alt_text = product.images[1].alt %}
     {% endif %}
-    
+
     <div class="product-image-wrapper{% if alt_view == '' or isGiftCard %} single-image{% endif %}">
         <a href="{{ product.url | within: collection }}">
-            <img class="product-image" src="{{ product.featured_image.src | img_url: '800x' }}" alt-image="{{ product.featured_image.src | img_url: '800x' }}" alt="{{ product.featured_image.alt | escape }}">
+            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt %}
 
             {% if alt_view != ''  %}
-                <img class="hidden" src="{{ alt_view | product_img_url: '800x' }}" alt="{{ alt_text | escape }}" />
+                {% include 'responsive-picture-img', img_src: alt_view, alt: alt_text, hidden: true %}
             {% endif %}
         </a>
+
         {% if sold_out %}
-        <div class="sold-out">{{ 'products.product.sold_out' | t }}</div>
+            <div class="sold-out">{{ 'products.product.sold_out' | t }}</div>
         {% endif %}
     </div>
+
     <div class="product-info-wrapper">
         <a href="{{ product.url | within: collection }}">
             <div class="product-name">{{ product.title }}</div>
-            <div class="price-box">
 
+            <div class="price-box">
                 {% if on_sale %}
-                <span class="product-compare-price">
-                    {{- product.compare_at_price | money_with_currency  | remove: '.00' | replace: '$','' -}}
-                </span>
+                    <span class="product-compare-price">
+                        {{- product.compare_at_price | money_with_currency  | remove: '.00' | replace: '$','' -}}
+                    </span>
                 {% endif %}
+
                 <span class="product-price" itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
                     {{- product.price | money_with_currency | remove: '.00' | replace: '$','' -}}
                 </span>
