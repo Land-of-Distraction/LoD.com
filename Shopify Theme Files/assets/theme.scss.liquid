@@ -9390,20 +9390,24 @@ article.item {
 			display: block;
 		}
 
+		.primary-img {
+			> img {
+				@include transition(opacity $fast ease-in-out);
+			}
+		}
+
+		.secondary-img {
+			> img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: -1;
+			}
+		}
+
 		img {
 			width: 100%;
 			vertical-align: top;
-
-			@include transition(opacity $fast ease-in-out);
-		}
-
-		.hidden > img {
-			position: absolute;
-			z-index: 0;
-			left: 0;
-			top: 0;
-			width: 100%;
-			@include opacity(0);
 		}
 	}
 
@@ -9493,21 +9497,9 @@ article.item {
 html.no-touchevents {
 	article.item {
 		&:hover {
-			.product-image-wrapper {
-				img {
-					@include opacity(0);
-				}
-
-				.hidden > img {
-					@include opacity(1);
-				}
-
-				&.single-image {
-					img {
-						@include opacity(1);
-					}
-
-					.hidden > img {
+			.product-image-wrapper:not(.single-image) {
+				.primary-img {
+					> img {
 						@include opacity(0);
 					}
 				}
@@ -11225,76 +11217,81 @@ html.no-touchevents {
 //  Common
 //  _____________________________________________
 
-.template-cart{
-
+.template-cart {
 	background: #fff;
 	color: $black;
 
-	a{
+	a {
 		color: inherit;
 	}
 
-	.cart-page{
+	.cart-page {
 		@include ruler(bottom, $bodyColor4);
-		  background-color: #fff;
-	color: #000;
+		background-color: #fff;
+		color: #000;
 	}
 
-	.cart-inner{
+	.cart-inner {
 		width: 100%;
 		max-width: 670px;
 		margin: 90px auto;
-		.heading{
+
+		.heading {
 			display: block;
 			text-align: center;
 			padding-bottom: $desktopMargin;
 			@include ruler(bottom, $bodyColor4);
-			h1{
+
+			h1 {
 				@include visually-hidden();
 			}
-			.item-count{
+
+			.item-count {
 				@extend .copy2;
 			}
 		}
 	}
 
-	.cart-table{
+	.cart-table {
 		width: 100%;
 
-		thead{
+		thead {
 			display: none;
 		}
 
-		td, th{
+		td,
+		th {
 			@extend .copy4;
 			text-align: left;
 			vertical-align: top;
-			&.product-details{
+
+			&.product-details {
 
 			}
 		}
 
-		tr{
+		tr {
 			@include ruler(bottom, $bodyColor4);
 		}
 
-		td{
+		td {
 			// padding:$desktopMargin 0;
 		}
 
-		tfoot{
+		tfoot {
 			@include ruler(bottom, $bodyColor4);
-			tr{
+
+			tr {
 				border-bottom: none;
-				td:last-child{
+
+				td:last-child {
 					text-align: right;
 				}
 			}
 		}
 
-		.product-image{
-
-			img{
+		.product-image {
+			img {
 				display: block;
 				max-width: 120px;
 				// margin: 0 auto;
@@ -11302,124 +11299,144 @@ html.no-touchevents {
 			}
 		}
 
-		.product-info{
-			.variant{
+		.product-info {
+			.variant {
 				display: block;
 			}
 		}
 
-		.product-title{
+		.product-title {
 
 		}
-		.item-properties{
-			a{
+
+		.item-properties {
+			a {
 
 			}
-			.item-property{
-				dt,dd{
+
+			.item-property {
+				dt,
+				dd {
 					display: inline-block;
 					text-align: left;
 				}
-				dd{
+
+				dd {
 					margin-left: 5px;
 					text-transform: capitalize;
 				}
 			}
 		}
-		.product-price{
+
+		.product-price {
 
 		}
-		.product-quantity{
-			input{
+
+		.product-quantity {
+			input {
 				opacity: 0;
 				width: 25px;
 				@include transition(all $fast);
 			}
-			.update-cart{
+
+			.update-cart {
 				opacity: 0;
 				visibility: hidden;
 				max-height: 0;
 				overflow: hidden;
 				@include transition(opacity $fast);
 			}
-			&.show-apply{
-				.update-cart{
+
+			&.show-apply {
+				.update-cart {
 					visibility: visible;
 					opacity: 1;
 					max-height: 40px;
 				}
 			}
 		}
-		.product-total{
+
+		.product-total {
 			text-align: right;
 
 		}
-		.js-qty{
+
+		.js-qty {
 			display: inline-block;
 			vertical-align: middle;
 			margin-bottom: 0;
-			.js-qty__adjust{
+
+			.js-qty__adjust {
 				//display: none !important;
 			}
-			button{
+
+			button {
 				width: $desktopMargin;
 			}
-			input{
+
+			input {
 				margin:0 auto;
 				opacity: 1;
 				@extend .copy4;
 			}
 		}
 
-		.qty-container{
+		.qty-container {
 			padding: 21px 0 9px 0;
-			input{
+
+			input {
 				width: 22px;
 				line-height: 22px;
 			}
 		}
 
-		.remove{
+		.remove {
 			@include icon-fonts-before($icon-close, inherit, 11px);
 			@extend .copy5;
 			text-transform: none;
 			color: $lightGrey2;
 			letter-spacing: 0;
+
 			&:before {
 				display: inline-block;
 				padding-right: $mobileMargin/2;
 			}
 		}
-		.update-cart{
+
+		.update-cart {
 			@extend .copy5;
 			color: $lightGrey2;
 			background: transparent;
 			border: none;
 			display: inline-block;
 		}
-
 	}//.cart-table
 
-	.total-row{
+	.total-row {
 		display: flex;
 		justify-content: space-between;
 		@extend .copy4;
 		@include ruler(bottom, $bodyColor4);
 		margin-bottom: $mobileMargin;
-		.total-title, .total-amount{
+
+		.total-title,
+		.total-amount {
 			padding: $desktopMargin2 0;
 		}
-		.total-amount{
+
+		.total-amount {
 			text-align: right;
 		}
 	}
 
-	.cart-footer{
+	.cart-footer {
 		@include clear-box();
-		.cart-actions{
+
+		.cart-actions {
 
 		}
-		textarea{
+
+		textarea {
 			// @extend .copy16;
 			margin:$mobileMargin/2 auto 0;
 			border-radius: $mobileMargin/2;
@@ -11432,12 +11449,14 @@ html.no-touchevents {
 			height: 90px;
 			@include transition(all $fast);
 		}
-		.cart-actions{
-			.cta{
+
+		.cart-actions {
+			.cta {
 				width: 100%;
 				margin-bottom: $mobileMargin/2;
 			}
-			.update{
+
+			.update {
 				display: block;
 				border-bottom:0;
 				background: transparent;
@@ -11446,38 +11465,43 @@ html.no-touchevents {
 				width: 100%;
 				line-height: $desktopMargin;
 			}
-			.continue-shopping{
+
+			.continue-shopping {
 				@extend .copy5;
 				color: $lightGrey2;
 				display: block;
 				text-align: center;
-				a{
+
+				a {
 					text-decoration: underline;
 				}
 			}
 		}
 	}//.cart-footer
 
-	.cart-help{
+	.cart-help {
 		@extend .copy5;
 		color: $lightGrey2;
 		text-align: center;
 		margin:0 auto;
 		margin-top: $mobileMargin*2;
 		max-width: 400px;
-		a{
+
+		a {
 			text-decoration: underline;
 		}
 	}
 
-	.cart-empty{
-		.cart-inner{
+	.cart-empty {
+		.cart-inner {
 
 		}
-		.cart-empty-wrapper{
+
+		.cart-empty-wrapper {
 			text-align: center;
 			padding: 0 $mobileMargin*2;
-			h2{
+
+			h2 {
 				@extend .heading2;
 				font-size: 22px;
 				letter-spacing: 3px;
@@ -11487,12 +11511,14 @@ html.no-touchevents {
 				@include animation-delay($slow);
 				@include animation-duration($fast);
 			}
-			p{
-				a{
+
+			p {
+				a {
 
 				}
 			}
-			.cta{
+
+			.cta {
 				margin:0 auto;
 				margin-top: $desktopMargin2*2;
 				margin-bottom: $mobileMargin;
@@ -11500,7 +11526,6 @@ html.no-touchevents {
 			}
 		}
 	}//.cart-empty
-
 }//.template-cart
 
 //

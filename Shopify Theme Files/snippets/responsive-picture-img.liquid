@@ -2,10 +2,10 @@
   @Brad - this snippet generates responsive images using the picture and source elements.
 
   input params:
-    img_src : source image file
-    alt     : alternative image text
-    sizes   : comma separated list of colon separated values, in order from smallest to largest screen, showing the size of a collection product image at a given device screen size - ex. "375:158,1024:482" - where 375 & 1024 represent screen sizes and 158 & 482 represent the size of the product image at that screen size
-    hidden  : is this img initially hidden, such as certain product images on collection pages
+    img_src            : source image file
+    alt                : alternative image text
+    sizes              : comma separated list of colon separated values, in order from smallest to largest screen, showing the size of a collection product image at a given device screen size - ex. "375:158,1024:482" - where 375 & 1024 represent screen sizes and 158 & 482 represent the size of the product image at that screen size
+    additional_classes : space separated list of additional classes to be added to the picture element
 {% endcomment %}
 
 {% comment %}
@@ -25,7 +25,7 @@
 {% assign screens = sizes | remove: ' ' | split: ',' %}
 
 <picture
-  {% if hidden == true %}class="hidden"{% endif %}
+  {% if additional_classes != blank %}class="{{ additional_classes }}"{% endif %}
 >
   {% for screen in screens %}
     {% assign key_val = screen | split: ':' %}

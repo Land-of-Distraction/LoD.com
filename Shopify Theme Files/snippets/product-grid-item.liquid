@@ -48,10 +48,10 @@ Check if the product is sold out and set a variable to be used below.
   	{% assign product_url = product.variants[0].url %}
     <div class="product-image-wrapper{% if alt_view == '' or isGiftCard %} single-image{% endif %}">
         <a href="{{ product_url }}">
-            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt %}
+            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt, additional_classes: 'primary-img' %}
 
             {% if alt_view != ''  %}
-                {% include 'responsive-picture-img', img_src: alt_view, alt: alt_text, hidden: true %}
+                {% include 'responsive-picture-img', img_src: alt_view, alt: alt_text, additional_classes: 'secondary-img' %}
             {% endif %}
         </a>
 
@@ -60,7 +60,6 @@ Check if the product is sold out and set a variable to be used below.
                 <span class="add-to-text">{{ 'products.product.add_to_cart' | t }}</span>
 
                 <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm-{{ product.id }}" class="add-to-cart-form">
-
                     <div class="product-attribute-container">
                         {% include 'product-swatches' %}
                         <div class="product-select-wrapper">
