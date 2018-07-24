@@ -24,12 +24,15 @@
 {% if settings.promo_banner_text !="" and settings.promo_banner_show == "enable" and currentDate > pastDate and currentDate < futureDate %}
     <div class="promo-banner">
         {% if settings.promo_banner_link %}
-        <a href="{{settings.promo_banner_link}}" title="Visit {{settings.promo_banner_text}}">
+            <a href="{{settings.promo_banner_link}}" title="Visit {{settings.promo_banner_text}}">
         {% endif %}
-            {{ settings.promo_banner_text }}
+
+        <span class="promo-banner-text">{{ settings.promo_banner_text }}</span>
+
         {% if settings.promo_banner_link %}
-        </a>
+            </a>
         {% endif %}
+
         <button class="close-promo"></button>
     </div>
 {% endif %}

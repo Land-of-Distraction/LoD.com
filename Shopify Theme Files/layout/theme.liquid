@@ -98,6 +98,11 @@
             <script src="{{ 'picturefill_v3.0.2.js' | asset_url }}" async></script>
         {% endif %}
 
+        <!-- @Brad - detect if we're on the homepage  -->
+        {% if template.name == 'index' %}
+            <script src="{{ 'dm_campaign.js' | asset_url }}" async></script>
+        {% endif %}
+
         <!-- Google Tag Manager -->
         <script>
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
