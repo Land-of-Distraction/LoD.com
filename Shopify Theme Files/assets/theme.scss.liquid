@@ -14733,8 +14733,12 @@ $utilityMenuWidth: 170px;
 #iStock-msg.iStock-error { color: #E10101; }
 #iStock-email-id::placeholder {color: #fff;}
 
-/** USOW Page **/
+#MiniCart .ajaxcart__product .ajaxcart__qty-remove:before,
+.drawer .drawer-close button:before {
+	color: #fff !important;
+}
 
+/** USOW Page **/
 .page-wrapper.page-utility.usow-page {
 	padding-top: 0;
 
@@ -14745,6 +14749,7 @@ $utilityMenuWidth: 170px;
 		padding-bottom: 0;
 	}
 
+	.usowdm-top-block,
 	.info-block {
 		padding: 10px;
 
@@ -14786,7 +14791,25 @@ $utilityMenuWidth: 170px;
 				clear: both;
 			}
 		}
-  	}
+	}
+
+	.usowdm-top-block {
+		.text-block {
+			margin-bottom: 1em;
+			padding: 1em;
+			font-family: $condFont;
+			font-weight: normal;
+			letter-spacing: 2px;
+			font-size: 1.2em;
+		}
+
+		h3 {
+			margin-top: 1em;
+		    margin-bottom: 1em;
+			text-transform: uppercase;
+			font-size: 2em;
+		}
+	}
 
 	.gallery-block {
 		padding: 10px;
@@ -14806,14 +14829,13 @@ $utilityMenuWidth: 170px;
 			grid-gap: 10px;
 		}
 	}
-}
 
-@media screen and (min-width: 1025px) {
-  	.page-wrapper.page-utility.usow-page {
+	@include mediaQuery($min, $desktop) {
+		.usowdm-top-block,
 		.info-block {
-	  		padding: 20px 0;
+			padding: 20px 0;
 
-	  		.top-block {
+			.top-block {
 				grid-template-columns: 1fr 2fr;
 				grid-gap: 20px;
 
@@ -14826,8 +14848,7 @@ $utilityMenuWidth: 170px;
 						line-height: 1.4;
 					}
 				}
-
-	  		}
+			}
 
 			.lower-block {
 				display: flex;
@@ -14835,7 +14856,9 @@ $utilityMenuWidth: 170px;
 				align-items: end;
 				margin-top: 20px;
 
-				.text-block, a {
+				.text-block,
+				.img-block,
+				a {
 					max-width: none;
 					margin-right: 2% !important;
 					width: 45%;
@@ -14858,6 +14881,21 @@ $utilityMenuWidth: 170px;
 			}
 		}
 
+		.usowdm-top-block {
+			.lower-block {
+				flex-direction: row;
+
+				.text-block {
+					margin-bottom: 0;
+					font-size: 1.2em;
+
+					p {
+						line-height: 2;
+					}
+				}
+			}
+		}
+
 		.gallery-block {
 			padding: 20px;
 
@@ -14875,9 +14913,4 @@ $utilityMenuWidth: 170px;
 			}
 		}
 	}
-}
-
-#MiniCart .ajaxcart__product .ajaxcart__qty-remove:before,
-.drawer .drawer-close button:before {
-	color: #fff !important;
 }
