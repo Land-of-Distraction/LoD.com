@@ -2,10 +2,9 @@
   @Brad - this snippet generates responsive images using the picture and source elements.
 
   input params:
+    img_class          : unique class for this bg img
     img_src            : source image file
-    alt                : alternative image text
     sizes              : comma separated list of colon separated values, in order from smallest to largest screen, showing the size of a collection product image at a given device screen size - ex. "375:158,1024:482" - where 375 & 1024 represent screen sizes and 158 & 482 represent the size of the product image at that screen size
-    additional_classes : space separated list of additional classes to be added to the picture element
 {% endcomment %}
 
 {% comment %}
@@ -24,21 +23,35 @@
 
 {% assign screens = sizes | remove: ' ' | split: ',' %}
 
-<picture
-  {% if additional_classes != blank %}class="{{ additional_classes }}"{% endif %}
->
-  {% for screen in screens %}
+{% capture HD_media_queries %}only screen and (-webkit-min-device-pixel-ratio : 1.25),
+  only screen and (-o-min-device-pixel-ratio      : 1.25/1),
+  only screen and ( min--moz-device-pixel-ratio   : 1.25),
+  only screen and ( min-device-pixel-ratio        : 1.25),
+  only screen and ( min-resolution                : 200dpi),
+  only screen and ( min-resolution                : 1.25dppx),{% endcapture %}
+
+<style>
+  {% for screen in screens reversed %}
     {% assign key_val = screen | split: ':' %}
 
     {% capture width %}{{ key_val.last }}x{% endcapture %}
     {% capture width_2x %}{{ key_val.last | times: 2 }}x{% endcapture %}
 
-    <source media="(max-width: {{ key_val.first }}px)" srcset="{{ img_src | img_url: width }}, {{ img_src | img_url: width_2x }} 2x">
-  {% endfor %}
+    @media
+    only screen and (max-width : {{ key_val.first }}px)
+    {
+      .{{ img_class }} {
+        background-image: url('{{ img_src | img_url: width }}');
+      }
+    }
 
-  <img
-    class="product-image"
-    src="{{ img_src | img_url }}"
-    alt="{{ alt | escape }}"
-  >
-</picture>
+    @media
+    {{ HD_media_queries }}
+    only screen and (max-width : {{ key_val.first }}px)
+    {
+      .{{ img_class }} {
+        background-image: url('{{ img_src | img_url: width_2x }}');
+      }
+    }
+  {% endfor %}
+</style>

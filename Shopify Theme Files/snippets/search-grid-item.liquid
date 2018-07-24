@@ -43,10 +43,10 @@ Check if the product is sold out and set a variable to be used below.
 
     <div class="product-image-wrapper{% if alt_view == '' or isGiftCard %} single-image{% endif %}">
         <a href="{{ product.url | within: collection }}">
-            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt, additional_classes: 'primary-img' %}
+            {% include 'responsive-picture-img', img_src: product.featured_image.src, alt: product.featured_image.alt, additional_classes: 'primary-img', sizes: '320:130,375:158,414:177,768:354,1024:482,1366:375,1600:453' %}
 
             {% if alt_view != ''  %}
-                {% include 'responsive-picture-img', img_src: alt_view, alt: alt_text, additional_classes: 'secondary-img' %}
+                {% include 'responsive-picture-img', img_src: alt_view, alt: alt_text, additional_classes: 'secondary-img', sizes: '320:130,375:158,414:177,768:354,1024:482,1366:375,1600:453' %}
             {% endif %}
         </a>
 
