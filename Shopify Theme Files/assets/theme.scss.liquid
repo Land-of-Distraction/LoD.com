@@ -12815,56 +12815,60 @@ html.no-touchevents {
 
 $utilityMenuWidth: 170px;
 
-.template-page{
+.template-page {
 	background: $white;
 	color: $black;
-	a{
+
+	a {
 		color: $black;
 	}
-	#MainContent{
+
+	#MainContent {
 		@include ruler(bottom,$bodyColor4);
 	}
 
-
-  &.white-header{
-	header.site-header{
-		.header-content{
-			.menu-toggle{
-				span{
-					background: $white;
-					&:before,
-					&:after{
+	&.white-header {
+		header.site-header {
+			.header-content {
+				.menu-toggle {
+					span {
 						background: $white;
+
+						&:before,
+						&:after {
+							background: $white;
+						}
+					}
+				}
+
+				.header-utilities {
+					.block-title {
+						color: $black;
 					}
 				}
 			}
-			.header-utilities{
-				.block-title{
-					color: $black;
-				}
+
+			h1 .site-logo,
+			.h1 .site-logo {
+				color: $black;
 			}
 		}
-		h1 .site-logo,
-		.h1 .site-logo{
-			color: $black;
-		}
-	}//header.site-header
-}//.white-header
+	}
 }
 
-.page-wrapper{
-
-	.content-wrapper{
+.page-wrapper {
+	.content-wrapper {
 		padding-top: $mobileMargin*3;
 		padding-bottom: $mobileMargin*3;
 		@extend .copy5;
 	}
 
-	.utility-menu{
+	.utility-menu {
 		@extend .copy7;
-		ul{
-			li{
-				a{
+
+		ul {
+			li {
+				a {
 					@extend .copy7;
 					position: relative;
 				}
@@ -12872,7 +12876,7 @@ $utilityMenuWidth: 170px;
 		}
 	}//.utility-menu
 
-	.tab-toggle{
+	.tab-toggle {
 		display: block;
 		width: 100%;
 		position: relative;
@@ -12883,7 +12887,8 @@ $utilityMenuWidth: 170px;
 		@extend .copy2;
 		// font-family: $heavyFont;
 		@include icon-fonts-before($icon-lod-arrow-right, inherit, 18px);
-		&:before{
+
+		&:before {
 			@include transition(all $slow);
 			@include transform(rotate(90deg));
 			position:absolute;
@@ -12891,7 +12896,7 @@ $utilityMenuWidth: 170px;
 			top:15px;
 		}
 
-		& + div{
+		+ div {
 			margin-left: 0;
 			max-height: 1px;
 			@include ruler(bottom,$bodyColor4);
@@ -12904,15 +12909,17 @@ $utilityMenuWidth: 170px;
 				color: inherit;
 			}
 		}
-		& + div + br {//Shopify add br after the tab toggles
+
+		+ div + br {//Shopify add br after the tab toggles
 			display: none;
 		}
 
-		&.active{
-			&:before{
+		&.active {
+			&:before {
 				@include transform(rotate(-90deg));
 			}
-			& + div{
+
+			+ div {
 				margin-bottom: 15px;
 				color: inherit;
 				overflow:visible;
@@ -12923,22 +12930,24 @@ $utilityMenuWidth: 170px;
 				}
 			}
 		}
-	}//.tab-toggle
+	}
 
-	.tab-content{
+	.tab-content {
 		@include clear-box();
-		.tab-inner{
+
+		.tab-inner {
 			padding-bottom: $mobileMargin;
 			padding-top: $mobileMargin/2;
 		}
 	}
 
-	.page-content{
+	.page-content {
 		margin: 0 auto;
 		padding-bottom: $mobileMargin*2;
 		@extend .copy5;
 		line-height: 21px;
-		.page-title{
+
+		.page-title {
 			@extend .copy7;
 			margin:0;
 			padding:0;
@@ -12947,19 +12956,27 @@ $utilityMenuWidth: 170px;
 			overflow:hidden;
 			width: 0;
 		}
-		h2,h3,h4,h5,h6{
+
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
 			// margin-top: $mobileMargin;
 			margin-bottom: $mobileMargin;
 			@extend .copy2;
 		}
-		p{
+
+		p {
 
 		}
-		ul{
-			li{
+
+		ul {
+			li {
 				position: relative;
 				padding-left: $desktopMargin/2;
-				&:before{
+
+				&:before {
 					content:"";
 					position: absolute;
 					top: 9px;
@@ -12971,15 +12988,16 @@ $utilityMenuWidth: 170px;
 				}
 			}
 		}
-	}//.page-content
+	}
 
-	&.page-utility{
+	&.page-utility {
 		@extend .copy5;
 	}
 
-	&.about-page{
+	&.about-page {
 		overflow: hidden;
-		.page-title{
+
+		.page-title {
 			@extend .copy7;
 			margin:0;
 			padding:0;
@@ -12989,48 +13007,113 @@ $utilityMenuWidth: 170px;
 			width: 0;
 		}
 
-		.content-wrapper{
+		.content-wrapper {
 			@extend .heading3;
 		}
 
-		.page-contacts{
-			.contact-title{
+		.page-contacts {
+			.contact-title {
 				@extend .nav1;
 			}
-			.contact-email{
+
+			.contact-email {
 				@extend .nav2;
 			}
 		}
 
-		.page-socials{
-			.social-title{
+		.page-socials {
+			.social-title {
 				@extend .nav1;
 			}
-			.social-list{
-				a{
+
+			.social-list {
+				a {
 					@extend .nav2;
 					padding:0 5px 0 0;
-					&:after{
+
+					&:after {
 						content: '/';
 						padding-left :10px;
 					}
-					&:first-child{
+
+					&:first-child {
 						padding-left:0;
 					}
-					&:last-child{
-						&:after{
+
+					&:last-child {
+						&:after {
 							display: none;
 						}
 					}
 				}
 			}
 		}
-
 	}
-}//.page-wrapper
+
+	&.page-retailers {
+		.page-content-wrapper {
+			display: flex;
+		}
+
+		.shopify-section {
+			width: 50%;
+			padding-left: 1em;
+
+			&:first-child {
+				padding-left: 0;
+			}
+		}
+
+		.continent-name {
+		    margin-bottom: 1.2em;
+			font-size: 2em;
+		}
+
+		.state-name,
+		.country-name {
+			position: relative;
+		    margin-bottom: 0.75em;
+		    padding-bottom: 0.5em;
+			font-size: 1.5em;
+
+			&:after {
+				content: '';
+				display: block;
+				width: 50%;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				border-bottom: 1px solid #ccc;
+			}
+		}
+
+		.retailer-list {
+			margin-bottom: 2.5em;
+
+			.retailer-list-item {
+				margin-bottom: 1.5em;
+				padding-left: 0;
+			}
+		}
+
+		.retailer-address-link {
+			display: block;
+		}
+
+		.retailer-name {
+			margin-bottom: 0.25em;
+		}
+
+		.retailer-address {
+			p {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
 
 #faq,
-#faqs-official-site-land-of-distraction{
+#faqs-official-site-land-of-distraction {
 	.page-wrapper .page-content{
 		margin-top: -10px;
 	}
@@ -13038,21 +13121,21 @@ $utilityMenuWidth: 170px;
 
 
 .template-index {
-  header.site-header .header-content nav .level-1>.nav-link {
-	color: $white;
-  }
+	header.site-header .header-content nav .level-1>.nav-link {
+		color: $white;
+	}
 
-  header.site-header h1 .site-logo {
-	color: $white;
-  }
+	header.site-header h1 .site-logo {
+		color: $white;
+	}
 
-  header.site-header .header-utilities .header-block .block-title {
-	color: $white !important;
-  }
+	header.site-header .header-utilities .header-block .block-title {
+		color: $white !important;
+	}
 
-  .black {
-	color: $black !important;
-  }
+	.black {
+		color: $black !important;
+	}
 }
 
 
@@ -13060,37 +13143,41 @@ $utilityMenuWidth: 170px;
 //  Mobile Only
 //  _____________________________________________
 @include query-mobile-only {
+
 };
 
 //
 //  Tablet and Mobile
 //  _____________________________________________
 @include query-tablet-mobile {
-	.template-page{
-		header.site-header{
+	.template-page {
+		header.site-header {
 			background-color: $white;
 			@include ruler(bottom,$bodyColor4);
 		}
 	}
-	.page-wrapper{
 
-		.utility-menu{
+	.page-wrapper {
+		.utility-menu {
 			padding: 0;
 			position: relative;
 			@include ruler(top,$bodyColor4);
 			@include ruler(bottom,$bodyColor4);
-			.selected-link{
+
+			.selected-link {
 				position: relative;
 				cursor: pointer;
 				font-size: 12px;
 				text-align: center;
 				line-height: $mobileMargin*3;
 				padding:0 $mobileMargin;
+				color: $white;
 				background: $black;
 				z-index: 2;
 				@include icon-fonts-after($icon-lod-arrow-right, inherit, 13px);
 				@include transition(all $fast);
-				&:after{
+
+				&:after {
 					@include transition(all $fast);
 					position:absolute;
 					right: $desktopMargin2;
@@ -13100,7 +13187,8 @@ $utilityMenuWidth: 170px;
 					@include transform(rotate(90deg) translateY(-50%));
 				}
 			}
-			ul{
+
+			ul {
 				max-height: 0;
 				background: $bodyColor5;
 				position: absolute;
@@ -13114,31 +13202,38 @@ $utilityMenuWidth: 170px;
 				@include opacity (0);
 				@include transition(all $fast);
 
-				li{
+				li {
 					@include ruler(bottom,$bodyColor4);
-					a{
+
+					a {
 						font-size: 12px;
 						text-align: center;
 						display: block;
 						line-height: $mobileMargin*3;
-						&:after{
+						color: $white;
+
+						&:after {
 							display: none;
 						}
-						&.active{
+
+						&.active {
 							opacity: 0.6;
 						}
 					}
 				}
 			}
-			&.active{
-				.selected-link{
+
+			&.active {
+				.selected-link {
 					border-color: black;
-					&:after{
+
+					&:after {
 						@include transform(rotate(-90deg));
 						margin-top: -5px;
 					}
 				}
-				ul{
+
+				ul {
 					border-color: black;
 					max-height: 600px;
 					@include opacity(1);
@@ -13146,61 +13241,63 @@ $utilityMenuWidth: 170px;
 			}
 		}//.utility-menu
 
-		.page-content{
+		.page-content {
 			padding: $mobileMargin;
-			.page-title{
+
+			.page-title {
 				@include ruler(bottom);
 				line-height: $mobileMargin*2;
 				padding-bottom: $mobileMargin/2;
 			}
 		}//.page-content
 
-		&.page-utility{
+		&.page-utility {
 
 		}
-		&.about-page{
+
+		&.about-page {
 			@include clear-box();
 			padding:$mobileMargin;
 			// display: flex;
 			// align-items:center;
 			// justify-content: center;
-			.content-wrapper{
-				margin:0 auto;
-				p{
-					&:last-child{
+
+			.content-wrapper {
+				margin: 0 auto;
+
+				p {
+					&:last-child {
 						margin-bottom: 0;
 					}
 				}
 			}
 
-			.about-utility{
+			.about-utility {
 				padding:0 0 $desktopMargin*2;
 				text-align: left;
 			}
 
-			.page-contacts{
-				.page-contact{
+			.page-contacts {
+				.page-contact {
 					margin-bottom: $desktopMargin;
 				}
 			}
 
-			.page-socials{
+			.page-socials {
 
 			}
 
-			.page-image{
+			.page-image {
 				text-align: center;
 				margin:0 auto;
 				margin-bottom: $mobileMargin;
-				&.image-2{
+
+				&.image-2 {
 					width: 80%;
 				}
 			}
-
-		}//.about-page
-
-	}//.page-wrapper
-
+		}
+	}
 };
 
 //
@@ -13227,41 +13324,44 @@ $utilityMenuWidth: 170px;
 //  Desktop
 //  _____________________________________________
 @include desktop-only {
-	.page-wrapper{
-
-		.content-wrapper{
+	.page-wrapper {
+		.content-wrapper {
 			position: relative;
 			padding-top: $desktopMargin*3;
-
 		}
 
-		.utility-menu{
+		.utility-menu {
 			width: $utilityMenuWidth;
 			margin-right: 100px;
+
 			.selected-link{
 				display: none;
 			}
-			ul{
-				li{
+
+			ul {
+				li {
 					display: block;
 					margin-bottom: 5px;
 					line-height: $desktopMargin;
 					vertical-align: top;
-					a{
+
+					a {
 						position: relative;
 						display: inline-block;
 						vertical-align: top;
 						@include icon-fonts-before($icon-lod-arrow-right, inherit, 20px);
-						&:before{
+
+						&:before {
 							display: inline-block;
 							vertical-align: top;
 							width: 0;
 							opacity: 0;
 							@include transition(margin-right $quick ease-in-out);
 						}
+
 						&.active,
-						&:hover{
-							&:before{
+						&:hover {
+							&:before {
 								width: auto;
 								opacity: 1;
 								margin-left: -7px;//arrow icon left spacing
@@ -13273,16 +13373,17 @@ $utilityMenuWidth: 170px;
 			}
 		}//.utility-menu
 
-		.page-content{
+		.page-content {
 			margin-right: 0;
 			width: calc(100% - #{$utilityMenuWidth + 100});
 			@include clear-box();
-			p{
+
+			p {
 				margin-top: 0;
 			}
 		}
 
-		&.about-page{
+		&.about-page {
 			@include clear-box();
 			position:relative;
 			min-height: 100vh;
@@ -13291,7 +13392,8 @@ $utilityMenuWidth: 170px;
 			flex-wrap: wrap;
 			align-items: center;
 			justify-content: center;
-			.content-wrapper{
+
+			.content-wrapper {
 				max-width: calc(60% - 170px);
 				margin:0 auto;
 				min-height: calc(100vh - 183px);
@@ -13302,18 +13404,18 @@ $utilityMenuWidth: 170px;
 				flex-wrap: wrap;
 			}
 
-			.content-box{
+			.content-box {
 				margin:0 auto;
 				width: 100%;
 			}
 
-			.shopify-section{
+			.shopify-section {
 				margin-top: auto;
 				flex:0 1 auto;
 				width: 100%;
 			}
 
-			.about-utility{
+			.about-utility {
 				@include clear-box();
 				display: flex;
 				justify-content: flex-start;
@@ -13321,52 +13423,54 @@ $utilityMenuWidth: 170px;
 				padding:$desktopMargin*2;
 			}
 
-			.page-contacts{
+			.page-contacts {
 				display: flex;
 				justify-content: flex-start;
-				.page-contact{
+
+				.page-contact {
 					margin-right: 210px;
 				}
 			}
 
-			.page-socials{
+			.page-socials {
 				margin-left: auto;
 			}
 
-			.page-image{
+			.page-image {
 				position: absolute;
 				max-width: 20%;
-				&.image-1{
+
+				&.image-1 {
 					top: 120px;
 					left: 60px;
 				}
-				&.image-2{
+
+				&.image-2 {
 					bottom: 150px;
 					max-width: 20%;
 					right: 60px;
 				}
 			}
+		}
 
-		}//.about-page
-
-		&.page-utility{
+		&.page-utility {
 			max-width: $tablet;
 			margin:0 auto;
 			padding-top: 120px;
 			min-height: 100vh;
 			@include clear-box();
-			.content-wrapper{
+
+			.content-wrapper {
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
 			}
 		}
-
 	}//.page-wrapper
 
-	.promo-banner-active{
-		.page-wrapper{
-			&.about-page{
+	.promo-banner-active {
+		.page-wrapper {
+			&.about-page {
 				min-height: calc(100vh - #{$promoBannerHeight});
 			}
 		}
@@ -13380,76 +13484,80 @@ $utilityMenuWidth: 170px;
 //  _____________________________________________
 //
 
-
-.template-password{
-
-  header.site-header .header-content{
-	height: $headerMobileHeight;
-  }
-
-  .password-page{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-  }
-
-  .inner-content{
-	padding: $mobileMargin*4 $mobileMargin*2;
-	// @extend .copy10;
-	text-align: center;
-	max-width: 500px;
-	margin:0 auto;
-	width: 100%;
-	h2,h4{
-	  @extend .copy7;
-	  margin-bottom: $desktopMargin;
+.template-password {
+	header.site-header .header-content {
+		height: $headerMobileHeight;
 	}
 
-	& > div{
-	  @include clear-box();
+	.password-page {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 100vh;
 	}
 
-	a{
-	  text-decoration: underline;
-	}
-
-	.customer-form{
-	  padding: $mobileMargin*2 0;
-	  label{
-		display: none;
-	  }
-	  .cta-light{
-		display: block;
-		@include ruler(bottom,$black);
-		margin:$mobileMargin auto $mobileMargin/2;
-		@extend .animated, .fadeInUp;
-		@include animation-delay($slow);
-		@include animation-duration($fast);
-	  }
-	  input{
-		@extend .copy8;
+	.inner-content {
+		padding: $mobileMargin*4 $mobileMargin*2;
+		// @extend .copy10;
+		text-align: center;
+		max-width: 500px;
+		margin:0 auto;
 		width: 100%;
-		text-align: left;
-		height: 30px;
-		@include ruler(bottom,$black);
-	  }
-	  .admin-login{
-		margin-top:$desktopMargin;
-		color: $black;
-		font-size: 12px;
-		a{
-		  color: $black;
+
+		h2,
+		h4 {
+			@extend .copy7;
+			margin-bottom: $desktopMargin;
 		}
-	  }
-	}
 
-	#Login{
-	  @include ruler(top);
-	  padding-bottom:0;
-	}
+		& > div {
+			@include clear-box();
+		}
 
-  }//.inner-content
+		a {
+			text-decoration: underline;
+		}
+
+		.customer-form {
+			padding: $mobileMargin*2 0;
+
+			label {
+				display: none;
+			}
+
+			.cta-light {
+				display: block;
+				@include ruler(bottom,$black);
+				margin:$mobileMargin auto $mobileMargin/2;
+				@extend .animated, .fadeInUp;
+				@include animation-delay($slow);
+				@include animation-duration($fast);
+			}
+
+			input {
+				@extend .copy8;
+				width: 100%;
+				text-align: left;
+				height: 30px;
+				@include ruler(bottom,$black);
+			}
+
+			.admin-login {
+				margin-top:$desktopMargin;
+				color: $black;
+				font-size: 12px;
+
+				a {
+					color: $black;
+				}
+			}
+		}
+
+		#Login {
+			@include ruler(top);
+			padding-bottom:0;
+		}
+	}//.inner-content
 }//.template-password
 
 .page-challenge {
@@ -14805,7 +14913,7 @@ $utilityMenuWidth: 170px;
 
 		h3 {
 			margin-top: 1em;
-		    margin-bottom: 1em;
+			margin-bottom: 1em;
 			text-transform: uppercase;
 			font-size: 2em;
 		}

@@ -1,0 +1,96 @@
+{% schema %}
+{
+	"name": "Retailers - Asia",
+	"blocks": [
+		{
+			"type"     : "country",
+			"name"     : "Country",
+			"settings" : [
+				{
+					"type"  : "text",
+					"id"    : "country",
+					"label" : "Country",
+					"info"  : "Add a new country"
+				}
+			]
+		},
+		{
+			"type": "retailer",
+			"name": "Retailer",
+			"settings": [
+				{
+					"type"  : "text",
+					"id"    : "retailer_name",
+					"label" : "Retailer Name"
+				},
+				{
+					"type"  : "richtext",
+					"id"    : "retailer_address",
+					"label" : "Retailer Address"
+				},
+				{
+					"type"  : "text",
+					"id"    : "retailer_address_link",
+					"label" : "Address Link",
+					"info"  : "Add a link to Google maps"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Retailer Page",
+			"category": "Retailer Page",
+			"settings": {
+
+			}
+		}
+	]
+}
+{% endschema %}
+
+<h3 class="continent-name">Asia</h3>
+
+{% assign in_country = false %}
+
+{% assign block_size_minus_1 = section.blocks.size | minus: 1 %}
+
+{% for i in (0..block_size_minus_1) %}
+	{% assign block = section.blocks[i] %}
+
+	{% if block.type == 'country' %}
+		{% if in_country %}
+			</ul>
+
+			{% assign in_country = false %}
+		{% endif %}
+
+		<h4 class="country-name">{{ block.settings.country }}</h4>
+
+		<ul class="retailer-list">
+
+		{% assign in_country = true %}
+	{% elsif block.type == 'retailer' %}
+		<li class="retailer-list-item">
+			{% if block.settings.retailer_address_link != blank %}
+				<a class="retailer-address-link" href="{{ block.settings.retailer_address_link }}" target="_blank">
+			{% endif %}
+
+			<h5 class="retailer-name">{{ block.settings.retailer_name }}</h5>
+
+			<div class="retailer-address">
+				{{ block.settings.retailer_address }}
+			</div>
+
+			{% if block.settings.retailer_address_link != blank %}
+				</a>
+			{% endif %}
+		</li>
+	{% endif %}
+
+	{% assign i_1 = i | plus: 1 %}
+
+	{% if i_1 == section.blocks.size and in_country %}
+		</ul>
+	{% endif %}
+{% endfor %}
