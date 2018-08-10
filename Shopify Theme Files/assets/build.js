@@ -11,7 +11,7 @@
         "page-product",
         "page-account",
         "page-login",
-        "page-account",
+        // "page-account",
         "page-utility",
         // "page-about",
         "page-lookbook",
@@ -21,7 +21,7 @@
         start: "(function() {",
         end: "}());"
     },
-    preserveLicenseComments: false,
+    preserveLicenseComments: true,
     baseUrl: ".",
     mainConfigFile: "app-min.js",
     out: '1r-min.js'
