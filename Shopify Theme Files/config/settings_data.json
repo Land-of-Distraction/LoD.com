@@ -30,7 +30,7 @@
     "show_related_products": true,
     "product_soldout_text": "We are currently sold out of this product. <br>Enter your email below if you'd like to be notified when it is back in stock.",
     "related_title": "Complete the Look",
-    "product_bg": "shopify:\/\/shop_images\/Col_2_Prod.jpg",
+    "product_bg": "shopify:\/\/shop_images\/alan-carrillo-474040-unsplash.jpg",
     "collection_color_filters": "black,blue,brown,green,grey,nude,orange,red,striped,yellow,white",
     "collection_size_filters": "0,2,4,6,8,10",
     "collection_pagination": "3",
@@ -126,9 +126,9 @@
           "1512504532782": {
             "type": "module_image",
             "settings": {
-              "module_image": "shopify:\/\/shop_images\/3_desktop.jpg",
+              "module_image": "shopify:\/\/shop_images\/Bottom.jpg",
               "hide_mobile": false,
-              "mobile_image": "shopify:\/\/shop_images\/3_mobile.jpg"
+              "mobile_image": "shopify:\/\/shop_images\/bottom_mobile.jpg"
             }
           }
         },
@@ -202,17 +202,17 @@
           "1512660228541": {
             "type": "module_image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/sku_18F2002COT_color_blonde__2061_copy.jpg",
+              "image": "shopify:\/\/shop_images\/left.jpg",
               "title": "shop",
-              "link": "shopify:\/\/products\/gayle_blonde"
+              "link": "shopify:\/\/products\/bruce"
             }
           },
           "1512660249422": {
             "type": "module_image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/sku_18F1002CPS_color_milk__1905_copy.jpg",
+              "image": "shopify:\/\/shop_images\/right.jpg",
               "title": "shop",
-              "link": "shopify:\/\/products\/anne_milk"
+              "link": "shopify:\/\/products\/sam"
             }
           }
         },
@@ -375,17 +375,17 @@
           "1531761400129": {
             "type": "module_image",
             "settings": {
-              "module_image": "shopify:\/\/shop_images\/2_desktop.jpg",
+              "module_image": "shopify:\/\/shop_images\/V_Magazine.jpg",
               "hide_mobile": false,
-              "mobile_image": "shopify:\/\/shop_images\/2_mobile.jpg"
+              "mobile_image": "shopify:\/\/shop_images\/V_Magazine_Mobile.jpg"
             }
           },
           "1512689579253": {
             "type": "module_image",
             "settings": {
-              "module_image": "shopify:\/\/shop_images\/1_desktop_4b850cbd-a086-4114-b0b8-1ccd420105ca.jpg",
-              "hide_mobile": false,
-              "mobile_image": "shopify:\/\/shop_images\/1_mobile_af04ed65-ffbc-42b1-a1f4-17a79c54dcf6.jpg"
+              "module_image": "shopify:\/\/shop_images\/mood_d_ebb79696-bec7-4556-8206-bff5bb31bb37.jpg",
+              "hide_mobile": true,
+              "mobile_image": ""
             }
           }
         },
@@ -583,28 +583,6 @@
               "retailer_address": "<p>660 Madison Ave<\/p>\n<p>New York, NY 10065<\/p>",
               "retailer_address_link": "https:\/\/goo.gl\/maps\/xRCLv444D612"
             }
-          },
-          "1532503973529": {
-            "type": "state",
-            "settings": {
-              "state": "Canada"
-            }
-          },
-          "1532503979350": {
-            "type": "retailer",
-            "settings": {
-              "retailer_name": "Hudson's Bay Queen Street",
-              "retailer_address": "<p>176 Yonge St<br>Toronto, ON M5C 2L7<\/p>",
-              "retailer_address_link": "https:\/\/goo.gl\/maps\/xdQqg1mUfpo"
-            }
-          },
-          "1532504047395": {
-            "type": "retailer",
-            "settings": {
-              "retailer_name": "Hudson's Bay Vancouver Downtown",
-              "retailer_address": "<p>674 Granville St<\/p>\n<p>Vancouver, BC V6C 1Z6<\/p>",
-              "retailer_address_link": "https:\/\/goo.gl\/maps\/jKSc7vTpyJK2"
-            }
           }
         },
         "block_order": [
@@ -617,10 +595,7 @@
           "1532503909968",
           "1532513417818",
           "1532513578426",
-          "1532513478999",
-          "1532503973529",
-          "1532503979350",
-          "1532504047395"
+          "1532513478999"
         ],
         "settings": {
         }
