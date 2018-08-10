@@ -69,12 +69,12 @@
 		{% endif %}
 
 		{% if settings.minify_js_enable %}
-			<script src="{{ 'vendor.min.js' | asset_url }}" defer="defer"></script>
+			<script src="{{ 'vendor.min.js' | asset_url }}"></script>
 		{% else %}
-			<script src="{{ 'modernizr-custom-v3.6.0.js' | asset_url }}" defer="defer"></script>
-			<script src="{{ 'jquery-1.12.4.js' | asset_url }}" defer="defer"></script>
-			<script src="{{ 'handlebars-v1.3.0.js' | asset_url }}" defer="defer"></script>
-			<script src="{{ 'require-v2.3.5.js' | asset_url }}" defer="defer"></script>
+			<script src="{{ 'modernizr-custom-v3.6.0.js' | asset_url }}"></script>
+			<script src="{{ 'jquery-1.12.4.js' | asset_url }}"></script>
+			<script src="{{ 'handlebars-v1.3.0.js' | asset_url }}"></script>
+			<script src="{{ 'require-v2.3.5.js' | asset_url }}"></script>
 		{% endif %}
 
 		<script src="{{ 'ajax-cart.js' | asset_url }}" defer="defer"></script>
@@ -120,27 +120,6 @@
 			})(window,document,'script','dataLayer','GTM-W58F9FJ');
 		</script>
 		<!-- End Google Tag Manager -->
-
-		{% comment %}
-			@Brad - load Mailchimp subscribe popup
-
-		<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script>
-
-		<script type="text/javascript">
-			require(
-				["mojo/signup-forms/Loader"],
-				function(L) {
-					L.start(
-						{
-							"baseUrl" : "mc.us17.list-manage.com",
-							"uuid"    :"42e5ad41a3f64c66706c42773",
-							"lid"     :"689bb9b492"
-						}
-					)
-				}
-			)
-		</script>
-		{% endcomment %}
 
 		{{ content_for_header }}
 	</head>
