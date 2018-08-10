@@ -50,7 +50,7 @@
     "size_chart_content_data": "",
     "size_chart_content_top": "",
     "size_chart_content_bottom": "",
-    "minify_js_enable": false,
+    "minify_js_enable": true,
     "checkout_header_image": "",
     "checkout_logo_image": "shopify:\/\/shop_images\/LOD_Logo_White.png",
     "checkout_logo_position": "center",
