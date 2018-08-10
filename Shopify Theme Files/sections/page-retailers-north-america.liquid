@@ -74,6 +74,8 @@
 		<li class="retailer-list-item">
 			{% if block.settings.retailer_address_link != blank %}
 				<a class="retailer-address-link" href="{{ block.settings.retailer_address_link }}" target="_blank">
+			{% else %}
+				<div class="retailer-address-link">
 			{% endif %}
 
 			<h5 class="retailer-name">{{ block.settings.retailer_name }}</h5>
@@ -84,6 +86,8 @@
 
 			{% if block.settings.retailer_address_link != blank %}
 				</a>
+			{% else %}
+				</div>
 			{% endif %}
 		</li>
 	{% endif %}
