@@ -30,10 +30,22 @@
   {% for screen in screens %}
     {% assign key_val = screen | split: ':' %}
 
+    {% capture media_query %}
+      {% comment %}
+        for largest/last screen size, use "only screen" to capture largest size and up
+        otherwise max-width
+      {% endcomment %}
+      {% if screen == screens.last %}
+        only screen
+      {% else %}
+        (max-width: {{ key_val.first }}px)
+      {% endif %}
+    {% endcapture %}
+
     {% capture width %}{{ key_val.last }}x{% endcapture %}
     {% capture width_2x %}{{ key_val.last | times: 2 }}x{% endcapture %}
 
-    <source media="(max-width: {{ key_val.first }}px)" srcset="{{ img_src | img_url: width }}, {{ img_src | img_url: width_2x }} 2x">
+    <source media="{{ media_query | strip }}" srcset="{{ img_src | img_url: width }}, {{ img_src | img_url: width_2x }} 2x">
   {% endfor %}
 
   <img

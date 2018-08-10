@@ -1,5 +1,5 @@
 {% comment %}
-  @Brad - this snippet generates responsive images using the picture and source elements.
+  @Brad - this snippet generates responsive background images
 
   input params:
     img_class          : unique class for this bg img
@@ -23,22 +23,33 @@
 
 {% assign screens = sizes | remove: ' ' | split: ',' %}
 
-{% capture HD_media_queries %}only screen and (-webkit-min-device-pixel-ratio : 1.25),
+{% capture HD_media_queries %}
+  only screen and (-webkit-min-device-pixel-ratio : 1.25),
   only screen and (-o-min-device-pixel-ratio      : 1.25/1),
   only screen and ( min--moz-device-pixel-ratio   : 1.25),
   only screen and ( min-device-pixel-ratio        : 1.25),
   only screen and ( min-resolution                : 200dpi),
-  only screen and ( min-resolution                : 1.25dppx),{% endcapture %}
+  only screen and ( min-resolution                : 1.25dppx),
+{% endcapture %}
 
 <style>
   {% for screen in screens reversed %}
     {% assign key_val = screen | split: ':' %}
 
+    {% comment %}
+      don't restrict to max-width at largest defined screen size
+    {% endcomment %}
+    {% capture screen_media_query %}
+      {% if screen != screens.last %}
+        and (max-width : {{ key_val.first }}px)
+      {% endif %}
+    {% endcapture %}
+
     {% capture width %}{{ key_val.last }}x{% endcapture %}
     {% capture width_2x %}{{ key_val.last | times: 2 }}x{% endcapture %}
 
     @media
-    only screen and (max-width : {{ key_val.first }}px)
+    only screen {{ screen_media_query | strip }}
     {
       .{{ img_class }} {
         background-image: url('{{ img_src | img_url: width }}');
@@ -46,8 +57,8 @@
     }
 
     @media
-    {{ HD_media_queries }}
-    only screen and (max-width : {{ key_val.first }}px)
+    {{ HD_media_queries | strip }}
+    only screen {{ screen_media_query | strip }}
     {
       .{{ img_class }} {
         background-image: url('{{ img_src | img_url: width_2x }}');
