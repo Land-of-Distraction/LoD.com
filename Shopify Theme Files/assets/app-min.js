@@ -99,7 +99,7 @@ require.config({
         "underscore": "underscore",
         "backbone": "backbone",
         "jquery": "jquery.noconflict",
-         
+
         // Libraries
         "jquery.easing": "jquery.easing",
         "jquery.transit": "jquery.transit",
@@ -122,10 +122,10 @@ require.config({
         "aos": "aos",
         "vimeo": "//player.vimeo.com/api/player",
         "facebook": "//connect.facebook.net/en_US/sdk",
-        
+
         // Main
         "router": "app-router",
-        
+
         // Modules
         "module-oneModal": "app-module-oneModal",
         "module-oneSwatches": "app-module-oneSwatches",
@@ -137,7 +137,7 @@ require.config({
         "module-oneSubscribe": "app-module-oneSubscribe",
         "module-oneContact": "app-module-oneContact",
         "module-oneVideo": "app-module-oneVideo",
-        
+
         // Pages
         "page-collection": "app-page-collection",
         "page-product": "app-page-product",
@@ -147,7 +147,7 @@ require.config({
         "page-account": "app-page-account",
         "page-utility": "app-page-utility",
         "page-styleGuide": "app-page-styleGuide",
-        
+
         // Views
         "view-header": "app-view-header",
         "view-collection": "app-view-collection",
@@ -159,7 +159,7 @@ require.config({
         "view-account": "app-view-account",
         "view-utility": "app-view-utility",
         "view-styleGuide": "app-view-styleGuide"
-        
+
         // Templates
     },
 
@@ -185,7 +185,7 @@ require.config({
             exports: 'FB'
         }
     },
-    
+
     config: {
         text: {
             useXhr: function (url, protocol, hostname, port) {
@@ -209,8 +209,7 @@ require([
     'underscore',
     'backbone'
 ], function () {
-    console.log('Main JS loaded!');
-    
-    require(["router"]);
+    console.info('main JS loaded');
 
+    require(["router"]);
 });

@@ -19,25 +19,26 @@ define([
 
     // Start routing by template type
     var $body = $(document.body);
-    console.log('Routing...' + ' ' + $body.attr('class'));
+
+    console.info('routing: ' + ' ' + $body.attr('class'));
 
     if ($body.hasClass('template-index') || $body.hasClass('template-home') || $body.hasClass('page-home')) {
         require(["page-home"]);
     }
-    
-    
+
+
     if ( $body.data('tempsuffix') == 'lookbook' ) {
         require(["page-lookbook"]);
     }
-    
+
     if ( ($body.hasClass('template-collection') || $body.hasClass('template-search')) && $body.data('tempsuffix') != 'lookbook' ) {
         require(["page-collection"]);
     }
- 
+
     if ($body.hasClass('template-product')) {
         require(["page-product"]);
     }
-    
+
     if ($body.hasClass('template-style-guide') || $body.hasClass('page-style-guide')) {
         require(["page-styleGuide"]);
     }
@@ -49,7 +50,7 @@ define([
     if ($body.hasClass('template-customers-account') || $body.hasClass('template-customers-addresses') || $body.hasClass('template-customers-order')) {
         require(["page-account"]);
     }
- 
+
     if ($body.hasClass('template-page') && $body.data('tempsuffix') == '') {
         require(["page-utility"]);
     }

@@ -99,7 +99,7 @@ require.config({
         "underscore": "underscore.js" + ORW.appUrlHash,
         "backbone": "backbone.js" + ORW.appUrlHash,
         "jquery": "jquery.noconflict.js" + ORW.appUrlHash,
-         
+
         // Libraries
         "jquery.easing": "jquery.easing.js" + ORW.appUrlHash,
         "jquery.transit": "jquery.transit.js" + ORW.appUrlHash,
@@ -117,16 +117,15 @@ require.config({
         "slick": "slick.js" + ORW.appUrlHash,
         "scrolloverflow": "scrolloverflow.js" + ORW.appUrlHash,
         "masonry": "masonry.pkgd.js" + ORW.appUrlHash,
-        "modernizr": "modernizr-2.0.6.js" + ORW.appUrlHash,
         "modernizr_autoplay": "modernizr_autoplay-detect.js" + ORW.appUrlHash,
         "imagesLoaded": "imagesloaded.pkgd.min.js" + ORW.appUrlHash,
         "aos": "aos.js" + ORW.appUrlHash,
         "vimeo": "//player.vimeo.com/api/player.js" + ORW.appUrlHash,
         "facebook": "//connect.facebook.net/en_US/sdk",
-        
+
         // Main
         "router": "app-router.js" + ORW.appUrlHash,
-        
+
         // Modules
         "module-oneModal": "app-module-oneModal.js" + ORW.appUrlHash,
         "module-oneSwatches": "app-module-oneSwatches.js" + ORW.appUrlHash,
@@ -138,7 +137,7 @@ require.config({
         "module-oneSubscribe": "app-module-oneSubscribe.js" + ORW.appUrlHash,
         "module-oneContact": "app-module-oneContact.js" + ORW.appUrlHash,
         "module-oneVideo": "app-module-oneVideo.js" + ORW.appUrlHash,
-        
+
         // Pages
         "page-collection": "app-page-collection.js" + ORW.appUrlHash,
         "page-product": "app-page-product.js" + ORW.appUrlHash,
@@ -148,7 +147,7 @@ require.config({
         "page-account": "app-page-account.js" + ORW.appUrlHash,
         "page-utility": "app-page-utility.js" + ORW.appUrlHash,
         "page-styleGuide": "app-page-styleGuide.js" + ORW.appUrlHash,
-        
+
         // Views
         "view-header": "app-view-header.js" + ORW.appUrlHash,
         "view-collection": "app-view-collection.js" + ORW.appUrlHash,
@@ -160,7 +159,7 @@ require.config({
         "view-account": "app-view-account.js" + ORW.appUrlHash,
         "view-utility": "app-view-utility.js" + ORW.appUrlHash,
         "view-styleGuide": "app-view-styleGuide.js" + ORW.appUrlHash
-        
+
         // Templates
     },
 
@@ -186,7 +185,7 @@ require.config({
             exports: 'FB'
         }
     },
-    
+
     config: {
         text: {
             useXhr: function (url, protocol, hostname, port) {
@@ -210,8 +209,7 @@ require([
     'underscore',
     'backbone'
 ], function () {
-    console.log('Main JS loaded!');
-    
-    require(["router"]);
+    console.info('main JS loaded');
 
+    require(["router"]);
 });

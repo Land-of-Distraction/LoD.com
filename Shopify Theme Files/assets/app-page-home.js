@@ -1,15 +1,14 @@
 define([
-    "view-home",
-    "domReady",
-    "jquery"
+	"view-home",
+	"domReady",
+	"jquery"
 ], function (ViewHome, domReady, $) {
+	"use strict";
 
-    "use strict";
+	// Global requires
+	domReady(function(){
+		console.info('init homepage');
 
-    // Global requires
-    domReady(function(){
-        console.log('init homepage');
-        new ViewHome({el: $('.homepage-container')});
-    });
-
+		new ViewHome({el: $('.homepage-container')});
+	});
 });

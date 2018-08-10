@@ -36,12 +36,12 @@ define([
 	var SocialView = Backbone.View.extend({
 
 		initialize: function (settings) {
-			console.log('Social init');
+			console.info('init social');
 
 			this.$socialWrapper = this.$el;
 			this.isFacebookInit = false;
             this.settings = settings;
-			
+
 			this.title = settings.title || $('meta[property="og:title"]').attr('content');
 			this.link = settings.link || window.location.href;
 			this.description = settings.description || $('meta[name="description"]').attr('content');
@@ -49,7 +49,7 @@ define([
 			this.pinterestTag = settings.pinterestTag || null;
 			this.twitterTag = settings.twitterTag || null;
 			this.productData = settings.product || null;
-			
+
 			this.storeName = ORW.facebook.storeName || '';
 
 			this.options = {
@@ -70,7 +70,7 @@ define([
 			'click .share-copy': function (e) {
 				var self = this,
 				link = self.link;
-				
+
 				e.preventDefault();
 				// window.prompt("Copy link to clipboard", link);
 				var $temp = $("<input>");
@@ -142,12 +142,12 @@ define([
 			},
 
 		},
-        
+
         findImage: function (e) {
             var self = this;
             var image = '';
             var $curr = $(e.currentTarget);
-            
+
             if (self.settings.image && $.type(self.settings.image) == 'string') {
                 return self.settings.image
             } else if (self.settings.image && $.type(self.settings.image) == 'function') {
@@ -156,31 +156,31 @@ define([
 					return resultImg();
 				}
 			}
-            
+
             if ($('body').hasClass('template-product')) {
                 // Product page share
                 var $image = $('#ProductPhoto img');
             } else {
                 var $image = $curr.closest('img');
             }
-            
+
             if ($image.length > 1) {
                 $image = $image.first();
                 image = $image.prop('src');
             } else if ($image.length == 1) {
                 image = $image.prop('src');
             }
-            
+
             return image;
         },
-        
+
 		facebookInit: function () {
 			var self = this;
 			var appId = ORW.facebook.id;
 			var appVer = ORW.facebook.ver;
 			// var appId = '817233515111522';
 			// var appVer = 'v2.6';
-			
+
 			if (appId && appVer) {
 				FB.init({
 					appId      : appId,
@@ -190,13 +190,13 @@ define([
 				FB.getLoginStatus(function(response) {
 					console.log(response);
 				});
-				
+
 				self.isFacebookInit = true;
-				
-				console.log('FB init');
+
+				console.info('init FB');
 			}
 		},
-		
+
 		emailSharingInit: function () {
 			var self = this;
 			// Init email sharing
@@ -218,7 +218,7 @@ define([
 				});
 			}
 		},
-		
+
 		destroy: function() {
             var self = this;
             self.undelegateEvents();
